@@ -215,3 +215,6 @@
          ※実装の場合のみ必須
       - 仕様についてはすぐに質問してください
    - commitメッセージは日本語で大丈夫ですので、わかりやすいメッセージをお願いします
+
+   - APIの動作確認は[Postman](https://www.postman.com/)を使ってください
+      - [Postmanの使い方](https://circleci.com/ja/blog/testing-an-api-with-postman/)
