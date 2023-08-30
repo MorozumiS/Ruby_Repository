@@ -1,0 +1,2 @@
+class LostPerson < ApplicationRecord
+end

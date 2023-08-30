@@ -1,0 +1,2 @@
+class LostItem < ApplicationRecord
+end

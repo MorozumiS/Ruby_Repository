@@ -1,0 +1,2 @@
+class LostItemImage < ApplicationRecord
+end

@@ -1,0 +1,2 @@
+class LostStorage < ApplicationRecord
+end
