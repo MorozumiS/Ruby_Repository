@@ -30,10 +30,6 @@ gem 'devise'
 # 論理削除
 gem 'discard'
 
-# デバック
-gem 'pry-rails'
-gem 'pry-byebug'
-
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -44,6 +40,11 @@ gem 'bootsnap', '>= 1.4.4', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  # DBの情報をコメントとして書き込む
+  gem 'annotate'
+  # デバック
+  gem 'pry-rails'
+  gem 'pry-byebug'
 end
 
 group :development do
