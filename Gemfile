@@ -19,6 +19,22 @@ gem 'puma', '~> 5.0'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
+# ファイルアップロード
+gem 'carrierwave'
+gem 'carrierwave-base64'
+gem 'mini_magick'
+
+# 認証
+gem 'devise'
+
+# 論理削除
+gem 'discard'
+
+# デバック
+gem 'pry-rails'
+gem 'pry-byebug'
+
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
