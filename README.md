@@ -196,3 +196,5 @@
 
    - [ステータスコード](https://qiita.com/uenosy/items/ba9dbc70781bddc4a491)
    - [REST API](https://tech.012grp.co.jp/entry/rest_api_basics)
+   - [Git](https://www.slideshare.net/kotas/git-15276118)
+   - [Git-flow](https://qiita.com/KosukeSone/items/514dd24828b485c69a05)
