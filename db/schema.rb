@@ -92,6 +92,8 @@ ActiveRecord::Schema.define(version: 2023_08_30_104227) do
     t.string "email", null: false
     t.integer "role", null: false
     t.string "tel", null: false
+    t.string "password", null: false
+    t.string "password_confirmation", null: false
     t.string "uid", default: "", null: false
     t.datetime "discarded_at"
     t.datetime "last_sign_in_at"

@@ -6,6 +6,8 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.string :email, null: false
       t.integer :role, null: false
       t.string :tel, null: false
+      t.string :password, null: false
+      t.string :password_confirmation, null: false
 
       t.string :uid, null: false, default: ""
       t.datetime :discarded_at
