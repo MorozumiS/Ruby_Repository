@@ -21,6 +21,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Project < ApplicationRecord
+  has_many :users
 
-  
+  validates :name, :place , presence: true
 end
