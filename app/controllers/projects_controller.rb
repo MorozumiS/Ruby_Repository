@@ -10,7 +10,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    project = Project.find_by(id: params[:id])
+    project = Project.find(params[:id])
     if project
       render json: project, status: :ok
     else
@@ -21,6 +21,6 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    params.permit(:name, :start_at, :end_at, :place, :client_id, :created_at, :updated_at)
+    params.require(:project).permit(:name, :start_at, :end_at, :place, :client_id, :created_at, :updated_at)
   end
 end
