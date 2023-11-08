@@ -42,7 +42,12 @@ class ProjectsController < ApplicationController
       if @project.update(project_params)
         render json: @project, status: :ok
       else
-        render json: { error: "イベントの更新に失敗しました" }, status: :unprocessable_entity
+        if @project.errors.full_messages_for(:name)
+          error =  "会場名が空です"
+        elsif @project.errors.full_messages_for(:place)
+          error =  "場所名が空です"
+        end
+        render json: { error: error}, status: :unprocessable_entity
       end
     end
   end
