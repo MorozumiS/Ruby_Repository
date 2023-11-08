@@ -27,6 +27,19 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def name_starts_with
+    if params[:name].present?
+      @projects = Project.where("name LIKE ?", "#{params[:name][0]}%")
+      if @projects.any?
+        render json: @projects, status: :ok
+      else
+        render json: { error: "イベントが存在しません" }, status: :not_found
+      end
+    else
+      render json: { error: "検索キーワードが提供されていません" }, status: :bad_request
+    end
+  end
+
   def update
     if @project.update(project_params)
       render json: @project, status: :ok
