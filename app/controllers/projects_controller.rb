@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def show_by_name
+  def name_search
     @project = Project.find_by(name: params[:name])
     if @project
       render json: @project, status: :ok
