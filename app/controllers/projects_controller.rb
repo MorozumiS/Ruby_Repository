@@ -19,10 +19,14 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    if @project.update(project_params)
-      render json: @project, status: :ok
+    if @project.nil?
+      render json: { error: "イベントが存在しません" }, status: :not_found
     else
-      render json: { error: "イベントの更新に失敗しました" }, status: :unprocessable_entity
+      if @project.update(project_params)
+        render json: @project, status: :ok
+      else
+        render json: { error: "イベントの更新に失敗しました" }, status: :unprocessable_entity
+      end
     end
   end
 
@@ -32,6 +36,6 @@ class ProjectsController < ApplicationController
   end
 
   def set_project
-    @project = Project.find(params[:id])
+    @project = Project.find_by(id: params[:id])
   end
 end
