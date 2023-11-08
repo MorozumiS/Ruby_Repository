@@ -23,6 +23,8 @@
 class User < ApplicationRecord
   has_many :projects
 
+  validates :name, :email , presence: true
+  validates :email, :tel , uniqueness: true
   # TODO: 後に追加する
   # validates :name, :role ,:uid, presence: true
   # validates :email, presence: true, uniqueness: true
