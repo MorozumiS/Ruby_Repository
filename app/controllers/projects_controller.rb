@@ -19,18 +19,13 @@ class ProjectsController < ApplicationController
   end
 
   def name_search
-    @project = Project.find_by(name: params[:name])
-    if @project
-      render json: @project, status: :ok
-    else
-      render json: { error: "イベントが存在しません" }, status: :not_found
-    end
-  end
-
-  def name_starts_with
     if params[:name].present?
-      @projects = Project.where("name LIKE ?", "#{params[:name][0]}%")
-      if @projects.any?
+      if params[:partial_match].present? && params[:partial_match] == "true"
+        @projects = Project.where("name LIKE ?", "#{params[:name]}%")
+      else
+        @project = Project.find_by(name: params[:name])
+      end
+      if @projects&.any? || @project
         render json: @projects, status: :ok
       else
         render json: { error: "イベントが存在しません" }, status: :not_found
@@ -41,10 +36,14 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    if @project.update(project_params)
-      render json: @project, status: :ok
+    if @project.nil?
+      render json: { error: "イベントが存在しません" }, status: :not_found
     else
-      render json: { error: "イベントの更新に失敗しました" }, status: :unprocessable_entity
+      if @project.update(project_params)
+        render json: @project, status: :ok
+      else
+        render json: { error: "イベントの更新に失敗しました" }, status: :unprocessable_entity
+      end
     end
   end
 
