@@ -1,6 +1,11 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
+# NOTE:
+  # アプリ起動時には読み込む必要がないものにrequire: falseを指定することで,
+  # 起動時のメモリ消費を抑え、アプリケーションの起動速度を向上させることができる。
+# :NOTE
+
 ruby '2.7.4'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
