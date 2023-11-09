@@ -24,6 +24,8 @@ module TrainingTheme
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
+    # Timezone
+    config.time_zone = 'Tokyo'
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -37,6 +39,7 @@ module TrainingTheme
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.i18n.available_locales = %i[ja en]
-    config.i18n.default_locale = :ja
+    config.i18n.default_locale = :ja# デフォルトのlocaleを日本語(:ja)にする
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
   end
 end
