@@ -33,7 +33,11 @@ gem 'discard'
 # 日本語化対応
 gem 'rails-i18n'
 
+# ページネーション
 gem 'kaminari'
+
+# フォーマット
+gem 'rubocop', require: false
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
