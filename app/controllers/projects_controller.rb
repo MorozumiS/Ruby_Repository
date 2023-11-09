@@ -11,7 +11,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    if @project
+    if @project && @project.discarded_at.nil?
       render json: @project, status: :ok
     else
       render json: { error: "イベントが存在しません" }, status: :not_found
@@ -19,19 +19,23 @@ class ProjectsController < ApplicationController
   end
 
   def name_search
-    if params[:name].present?
-      if params[:partial_match].present? && params[:partial_match] == "true"
-        @projects = Project.where("name LIKE ?", "#{params[:name]}%")
-      else
-        @project = Project.find_by(name: params[:name])
-      end
-      if @projects&.any? || @project
+    if params[:name].blank?
+      render json: { error: "検索キーワードが提供されていません" }, status: :bad_request
+      return
+    end
+
+    if params[:name].length < 3
+      render json: { error: "文字数が不足しています" }, status: :bad_request
+      return
+    end
+
+    if params[:partial_match].present? && params[:partial_match] == "true"
+      @projects = Project.where("name LIKE ?", "#{params[:name]}%")
+      if @projects&.any?
         render json: @projects, status: :ok
       else
         render json: { error: "イベントが存在しません" }, status: :not_found
       end
-    else
-      render json: { error: "検索キーワードが提供されていません" }, status: :bad_request
     end
   end
 
