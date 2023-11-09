@@ -26,6 +26,17 @@ module TrainingTheme
 
     # Timezone
     config.time_zone = 'Tokyo'
+
+    # railsコマンド実行時に不要なファイルを作成しないようにする
+    config.generators do |g|
+      g.template_engine false
+      g.assets false
+      g.helper false
+      g.test_framework :rspec,
+                        view_specs: false,
+                        helper_specs: false
+    end
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
