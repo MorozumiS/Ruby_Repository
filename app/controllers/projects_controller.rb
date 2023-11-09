@@ -18,15 +18,28 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def name_search
-    if params[:name].blank?
+  def advanced_search
+    if params[:name].blank? && params[:place].blank?
       return render_error("検索キーワードが提供されていません", :bad_request)
-    elsif params[:name].length < 3
-      return render_error("文字数が不足しています", :bad_request)
     end
 
-    name_query = params[:name] + "%"
-    projects = Project.where("name LIKE ?",name_query)
+    if params[:name].present? && params[:name].length < 3
+      return render_error("イベント名の文字数が不足しています", :bad_request)
+    end
+
+    if params[:place].present? && params[:place].length < 3
+      return render_error("会場名の文字数が不足しています", :bad_request)
+    end
+
+    name_query = params[:name].present? ?  params[:name] + "%" : nil
+    place_query = params[:place].present? ?  params[:place] + "%" : nil
+
+    if name_query && place_query
+      projects = Project.where("name LIKE ? AND place LIKE ?", name_query, place_query).compact
+    else
+      projects = Project.where("name LIKE ? OR place LIKE ?", name_query, place_query).compact
+    end
+
     if projects.blank?
       render_error("イベントが存在しません", :not_found)
     else
@@ -76,6 +89,6 @@ class ProjectsController < ApplicationController
   end
 
   def render_error(message, status)
-    render json: { error: message }, status: status
+    render json: { error: message, status: status}
   end
 end
