@@ -6,59 +6,55 @@ class ProjectsController < ApplicationController
     if project.save
       render json: project, status: :created
     else
-      render json:  { error: "イベントの登録に失敗しました" }, status: :unprocessable_entity
+      render_error("イベントの登録に失敗しました", :unprocessable_entity )
     end
   end
 
   def show
-    if @project
+    if @project && !@project.delete_flg
       render json: @project, status: :ok
     else
-      render json: { error: "イベントが存在しません" }, status: :not_found
+      render_error("イベントが存在しません", :not_found)
     end
   end
 
   def name_search
-    if params[:name].present?
-      if params[:partial_match].present? && params[:partial_match] == "true"
-        @projects = Project.where("name LIKE ?", "#{params[:name]}%")
-      else
-        @project = Project.find_by(name: params[:name])
-      end
-      if @projects&.any? || @project
-        render json: @projects, status: :ok
-      else
-        render json: { error: "イベントが存在しません" }, status: :not_found
-      end
+    if params[:name].blank?
+      return render_error("検索キーワードが提供されていません", :bad_request)
+    elsif params[:name].length < 3
+      return render_error("文字数が不足しています", :bad_request)
+    end
+
+    name_query = params[:name] + "%"
+    projects = Project.where("name LIKE ?",name_query)
+    if projects.blank?
+      render_error("イベントが存在しません", :not_found)
     else
-      render json: { error: "検索キーワードが提供されていません" }, status: :bad_request
+      render json: projects, status: :ok
     end
   end
 
   def update
-    if @project.nil?
-      render json: { error: "イベントが存在しません" }, status: :not_found
+    if @project.update(project_params)
+      render json: @project, status: :ok
     else
-      if @project.update(project_params)
-        render json: @project, status: :ok
-      else
-        if @project.errors.full_messages_for(:name)
-          error =  "会場名が空です"
-        elsif @project.errors.full_messages_for(:place)
-          error =  "場所名が空です"
-        end
-        render json: { error: error}, status: :unprocessable_entity
+      if @project.errors.full_messages_for(:name)
+        error =  "会場名が空です"
+      elsif @project.errors.full_messages_for(:place)
+        error =  "場所名が空です"
       end
+      render json: { error: error}, status: :unprocessable_entity
     end
   end
 
   def destroy
-    if @project.update(discarded_at: Time.current)
+    if @project.update(delete_flg: true, discarded_at: Time.current)
       render json: project_response(@project), status: :ok
     else
-      render json: { error: "イベントの削除に失敗しました" }, status: :unprocessable_entity
+      render_error("イベントの削除に失敗しました", :unprocessable_entity)
     end
   end
+
 
   private
   def project_params
@@ -77,5 +73,9 @@ class ProjectsController < ApplicationController
     user_id: project.user_id,
     created_at: project.created_at,
     updated_at: project.updated_at}
+  end
+
+  def render_error(message, status)
+    render json: { error: message }, status: status
   end
 end
