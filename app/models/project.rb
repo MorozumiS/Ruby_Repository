@@ -3,6 +3,7 @@
 # Table name: projects
 #
 #  id           :bigint           not null, primary key
+#  delete_flg   :boolean          default(FALSE), not null
 #  discarded_at :datetime
 #  end_at       :datetime
 #  name         :string(255)      not null

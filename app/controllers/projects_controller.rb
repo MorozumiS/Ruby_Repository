@@ -11,7 +11,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    if @project && @project.discarded_at.nil?
+    if @project && !@project.delete_flg
       render json: @project, status: :ok
     else
       render json: { error: "イベントが存在しません" }, status: :not_found
@@ -20,21 +20,19 @@ class ProjectsController < ApplicationController
 
   def name_search
     if params[:name].blank?
-      render json: { error: "検索キーワードが提供されていません" }, status: :bad_request
-      return
+      return render json: { error: "検索キーワードが提供されていません" }, status: :bad_request
+    elsif params[:name].length < 3
+      return render json: { error: "文字数が不足しています" }, status: :bad_request
     end
 
-    if params[:name].length < 3
-      render json: { error: "文字数が不足しています" }, status: :bad_request
-      return
-    end
+    name_query = params[:name] + "%"
 
-    if params[:partial_match].present? && params[:partial_match] == "true"
-      @projects = Project.where("name LIKE ?", "#{params[:name]}%")
-      if @projects&.any?
-        render json: @projects, status: :ok
-      else
+    if params[:partial_match] != "false"
+      @projects = Project.where("name LIKE ?",name_query)
+      if @projects.blank?
         render json: { error: "イベントが存在しません" }, status: :not_found
+      else
+        render json: @projects, status: :ok
       end
     end
   end
@@ -57,12 +55,13 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    if @project.update(discarded_at: Time.current)
+    if @project.update(delete_flg: true, discarded_at: Time.current)
       render json: project_response(@project), status: :ok
     else
       render json: { error: "イベントの削除に失敗しました" }, status: :unprocessable_entity
     end
   end
+
 
   private
   def project_params
