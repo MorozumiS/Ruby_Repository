@@ -26,16 +26,14 @@ class ProjectsController < ApplicationController
     end
 
     name_query = params[:name] + "%"
-
-    if params[:partial_match] != "false"
-      projects = Project.where("name LIKE ?",name_query)
-      if projects.blank?
-        render json: { error: "イベントが存在しません" }, status: :not_found
-      else
-        render json: projects, status: :ok
-      end
+    projects = Project.where("name LIKE ?",name_query)
+    if projects.blank?
+      render json: { error: "イベントが存在しません" }, status: :not_found
+    else
+      render json: projects, status: :ok
     end
   end
+
 
   def update
     if @project.nil?
