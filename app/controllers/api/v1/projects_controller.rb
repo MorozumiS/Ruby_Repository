@@ -39,9 +39,9 @@ class Api::V1::ProjectsController < ApplicationController
     place_query = params[:place].present? ?  params[:place] + "%" : nil
 
     if name_query && place_query
-      projects = Project.where("name ILIKE ? AND place ILIKE ?", name_query, place_query).compact
+      projects = Project.where("name LIKE ? AND place LIKE ?", name_query, place_query).compact
     else
-      projects = Project.where("name ILIKE ? OR place ILIKE ?", name_query, place_query).compact
+      projects = Project.where("name LIKE ? OR place LIKE ?", name_query, place_query).compact
     end
     response_success(projects)
   end
