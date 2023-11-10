@@ -10,10 +10,8 @@ class Api::V1::ProjectsController < ApplicationController
   # POST /api/v1/projects
   def create
     project = Project.new(project_params)
-    if project.save
+    if project.save!
       response_success(project)
-    else
-      response_custom_error("イベントの登録に失敗しました", :unprocessable_entity )
     end
   end
 
@@ -73,7 +71,7 @@ class Api::V1::ProjectsController < ApplicationController
 
   private
   def project_params
-    params.require(:project).permit(:name, :start_at, :end_at, :place, :user_id, :created_at, :updated_at)
+    params.permit(:name, :start_at, :end_at, :place, :user_id, :created_at, :updated_at)
   end
 
   def set_project
