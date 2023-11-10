@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
     end
   end
 
-  def advanced_search
+  def search
     if params[:name].blank? && params[:place].blank?
       return render_error("検索キーワードが提供されていません", :bad_request)
     end
@@ -35,9 +35,9 @@ class ProjectsController < ApplicationController
     place_query = params[:place].present? ?  params[:place] + "%" : nil
 
     if name_query && place_query
-      projects = Project.where("name LIKE ? AND place LIKE ?", name_query, place_query).compact
+      projects = Project.where("name ILIKE ? AND place ILIKE ?", name_query, place_query).compact
     else
-      projects = Project.where("name LIKE ? OR place LIKE ?", name_query, place_query).compact
+      projects = Project.where("name ILIKE ? OR place ILIKE ?", name_query, place_query).compact
     end
 
     if projects.blank?
