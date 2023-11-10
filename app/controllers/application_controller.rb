@@ -4,7 +4,7 @@ class ApplicationController < ActionController::API
   #
 
   # エラーハンドリング
-  rescue_from StandardError, with: :response_internal_server_error
+  # rescue_from StandardError, with: :response_internal_server_error
   rescue_from ActiveRecord::RecordNotFound , with: :record_not_found
   rescue_from ActiveRecord::RecordInvalid, with: :unpermitted_parameters
 
@@ -30,9 +30,12 @@ private
   end
 
   # 500 Internal Server Error
-  def response_internal_server_error(e = nil)
-    error_log(e) if e.present?
-    render status: :internal_server_error, json: {message: e}
-  end
+  # def response_internal_server_error(e = nil)
+  #   error_log(e) if e.present?
+  #   render status: :internal_server_error, json: {message: e}
+  # end
 
+  def response_custom_error(message, status)
+    render json: { error: message }, status: status
+  end
 end
