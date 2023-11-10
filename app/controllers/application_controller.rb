@@ -35,4 +35,7 @@ private
   #   render status: :internal_server_error, json: {message: e}
   # end
 
+  def render_error(message, status)
+    render json: { error: message }, status: status
+  end
 end
