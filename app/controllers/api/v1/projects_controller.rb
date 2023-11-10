@@ -1,7 +1,7 @@
 class Api::V1::ProjectsController < ApplicationController
 
   # サンプルAPI
-  # /api/v1/projects
+  # GET /api/v1/projects
   def index
     projects = Project.all
     render status: :ok, json: { status: 200, data: projects }
