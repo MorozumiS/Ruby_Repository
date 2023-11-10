@@ -25,4 +25,5 @@ class Project < ApplicationRecord
   has_many :users
 
   validates :name, :place , presence: true
+  validates :id, numericality: { only_integer: true }
 end
