@@ -7,14 +7,6 @@ class Api::V1::ProjectsController < ApplicationController
     response_success(projects)
   end
 
-  # POST /api/v1/projects
-  def create
-    project = Project.new(project_params)
-    if project.save!
-      response_success(project)
-    end
-  end
-
   # GET /api/v1/projects/:id
   def show
     if @project&.delete_flg == false
@@ -50,6 +42,19 @@ class Api::V1::ProjectsController < ApplicationController
     response_success(projects)
   end
 
+  # POST /api/v1/projects
+  def create
+    # project = Project.new(project_params)
+    # if project.save!
+    #   response_success(project)
+    # end
+
+    # MEMO: こちらの方がいいと思います（処理は同じです）
+    # TODO: ログインユーザーのIDを一緒に保存
+    project = Project.create!(project_params)
+    response_success(project)
+  end
+
   # PATCH /api/v1/projects/:id
   def update
     if @project.update!(project_params)
@@ -73,10 +78,10 @@ class Api::V1::ProjectsController < ApplicationController
     end
   end
 
-
   private
+
   def project_params
-    params.permit(:name, :start_at, :end_at, :place, :user_id, :created_at, :updated_at)
+    params.require(:project).permit(:name, :start_at, :end_at, :place, :user_id, :created_at, :updated_at, :delete_flg, :discarded_at)
   end
 
   def set_project
@@ -89,4 +94,5 @@ class Api::V1::ProjectsController < ApplicationController
     created_at: project.created_at,
     updated_at: project.updated_at}
   end
+
 end

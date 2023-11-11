@@ -25,4 +25,8 @@ class Project < ApplicationRecord
   has_many :users
 
   validates :name, :place , presence: true
+
+  # TODO: scopeを使って、削除済みのイベントを除外する
+
+  # TODO: scopeを使って管理者かどうかを判定して、管理者のみプロジェクトを作成・更新・削除できるようにする
 end
