@@ -1,10 +1,10 @@
 class Api::V1::ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :update, :destroy]
-  # サンプルAPI
+
   # GET /api/v1/projects
   def index
     projects = Project.all
-    render status: :ok, json: { status: 200, data: projects }
+    response_success(projects)
   end
 
   # POST /api/v1/projects
@@ -22,17 +22,20 @@ class Api::V1::ProjectsController < ApplicationController
     end
   end
 
-  # GET /api/v1/projects/serch
+  # GET /api/v1/projects/search
   def search
     if params[:name].blank? && params[:place].blank?
+      # TODO: エラーメッセージをja.ymlに移行する
       return response_custom_error("検索キーワードが提供されていません", :bad_request)
     end
 
     if params[:name].present? && params[:name].length < 3
+      # TODO: エラーメッセージをja.ymlに移行する
       return response_custom_error("イベント名の文字数が不足しています", :bad_request)
     end
 
     if params[:place].present? && params[:place].length < 3
+      # TODO: エラーメッセージをja.ymlに移行する
       return response_custom_error("会場名の文字数が不足しています", :bad_request)
     end
 
@@ -53,8 +56,10 @@ class Api::V1::ProjectsController < ApplicationController
       response_success(@project)
     else
       if @project.errors.full_messages_for(:name)
+        # TODO: エラーメッセージをja.ymlに移行する
         error =  "会場名が空です"
       elsif @project.errors.full_messages_for(:place)
+        # TODO: エラーメッセージをja.ymlに移行する
         error =  "場所名が空です"
       end
       render json: { error: error}, status: :unprocessable_entity
