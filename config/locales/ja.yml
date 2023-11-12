@@ -1,0 +1,30 @@
+---
+ja:
+  activerecord:
+    # 全てのmodelで共通して使用するattributesを定義
+    attributes:
+      created_at: 作成日
+      updated_at: 更新日
+    # model毎に定義したいattributesを記述(modelの日本語化)
+    attributes:
+      # user:
+      #   name: 氏名
+      #   furigana: ふりがな
+      #   image: 写真
+      #   email: メールアドレス
+      #   tel: 電話番号
+      #   role: 権限
+      project:
+        name: 案件名
+        start_at: イベント開始日時
+        end_at: イベント終了日時
+        place: 場所
+        organizer: 主催者
+        client: 得意先
+  response:
+    message:
+      success: 正常に処理が完了しました
+      bad_request: パラメーターが不足しています
+      not_found: 参照されたデータは存在しません
+      permission_denied: アクセス権限がありません
+      internal_server_error: Internal Server Error
