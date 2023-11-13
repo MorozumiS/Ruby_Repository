@@ -19,8 +19,8 @@ class Api::V1::LostStoragesController < ApplicationController
 
   # GET /api/v1/projects/:project_id/lost_storages/
   def index
-    projects = LostStorage.all
-    render status: :ok, json: { status: 200, data: projects }
+    lostStorage = LostStorage.all
+    render status: :ok, json: { status: 200, data: lostStorage }
   end
 
   private
