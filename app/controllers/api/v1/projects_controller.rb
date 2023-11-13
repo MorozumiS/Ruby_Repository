@@ -1,18 +1,10 @@
 class Api::V1::ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :update, :destroy]
-  # サンプルAPI
+
   # GET /api/v1/projects
   def index
     projects = Project.all
-    render status: :ok, json: { status: 200, data: projects }
-  end
-
-  # POST /api/v1/projects
-  def create
-    project = Project.new(project_params)
-    if project.save!
-      response_success(project)
-    end
+    response_success(projects)
   end
 
   # GET /api/v1/projects/:id
@@ -22,17 +14,20 @@ class Api::V1::ProjectsController < ApplicationController
     end
   end
 
-  # GET /api/v1/projects/serch
+  # GET /api/v1/projects/search
   def search
     if params[:name].blank? && params[:place].blank?
+      # TODO: エラーメッセージをja.ymlに移行する
       return response_custom_error("検索キーワードが提供されていません", :bad_request)
     end
 
     if params[:name].present? && params[:name].length < 3
+      # TODO: エラーメッセージをja.ymlに移行する
       return response_custom_error("イベント名の文字数が不足しています", :bad_request)
     end
 
     if params[:place].present? && params[:place].length < 3
+      # TODO: エラーメッセージをja.ymlに移行する
       return response_custom_error("会場名の文字数が不足しています", :bad_request)
     end
 
@@ -47,14 +42,29 @@ class Api::V1::ProjectsController < ApplicationController
     response_success(projects)
   end
 
+  # POST /api/v1/projects
+  def create
+    # project = Project.new(project_params)
+    # if project.save!
+    #   response_success(project)
+    # end
+
+    # MEMO: こちらの方がいいと思います（処理は同じです）
+    # TODO: ログインユーザーのIDを一緒に保存
+    project = Project.create!(project_params)
+    response_success(project)
+  end
+
   # PATCH /api/v1/projects/:id
   def update
     if @project.update!(project_params)
       response_success(@project)
     else
       if @project.errors.full_messages_for(:name)
+        # TODO: エラーメッセージをja.ymlに移行する
         error =  "会場名が空です"
       elsif @project.errors.full_messages_for(:place)
+        # TODO: エラーメッセージをja.ymlに移行する
         error =  "場所名が空です"
       end
       render json: { error: error}, status: :unprocessable_entity
@@ -68,8 +78,8 @@ class Api::V1::ProjectsController < ApplicationController
     end
   end
 
-
   private
+
   def project_params
     params.permit(:name, :start_at, :end_at, :place, :execution_date, :user_id, :created_at, :updated_at)
   end
@@ -84,4 +94,5 @@ class Api::V1::ProjectsController < ApplicationController
     created_at: project.created_at,
     updated_at: project.updated_at}
   end
+
 end

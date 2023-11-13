@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::API
-  # TODO ここに共通処理を記述する
-  # ログ出力
-  #
+  # MEMO: ここに共通処理を記述する
+  # TODO: 例外発生時にログ出力
 
   # エラーハンドリング
   # rescue_from StandardError, with: :response_internal_server_error
@@ -25,11 +24,12 @@ private
     render status: :not_found, json: { status: 404, message: 'リソースが存在しません' }
   end
 
+  # 400 Bad Request(不正なパラメータが送られてきた場合の処理)
   def unpermitted_parameters
     render status: :bad_request, json: { status: 400, message: '不正なパラメータです' }
   end
 
-  # 500 Internal Server Error
+  # [WIP]500 Internal Server Error
   # def response_internal_server_error(e = nil)
   #   error_log(e) if e.present?
   #   render status: :internal_server_error, json: {message: e}
