@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_09_044929) do
+ActiveRecord::Schema.define(version: 2023_11_14_123634) do
 
   create_table "lost_item_images", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "content", null: false
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 2023_11_09_044929) do
 
   create_table "lost_items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
-    t.string "place", null: false
+    t.string "lost_spot", null: false
     t.string "comment"
     t.string "owner_name"
     t.string "owner_tel"
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(version: 2023_11_09_044929) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "lost_storage_id"
     t.bigint "project_id"
+    t.bigint "lost_item_image_id", null: false
+    t.index ["lost_item_image_id"], name: "index_lost_items_on_lost_item_image_id"
     t.index ["lost_storage_id"], name: "index_lost_items_on_lost_storage_id"
     t.index ["project_id"], name: "index_lost_items_on_project_id"
   end
@@ -84,6 +86,7 @@ ActiveRecord::Schema.define(version: 2023_11_09_044929) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
     t.boolean "delete_flg", default: false, null: false
+    t.date "execution_date"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
