@@ -81,7 +81,7 @@ class Api::V1::ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit(:name, :start_at, :end_at, :place, :execution_date, :user_id, :created_at, :updated_at)
+    params.require(:project).permit(:name, :start_at, :end_at, :place, :execution_date, :user_id, :delete_flg, :discarded_at)
   end
 
   def set_project
