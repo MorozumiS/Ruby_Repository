@@ -18,7 +18,6 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class LostStorage < ApplicationRecord
-  has_many :projects
 
   validates :name, presence: true
 
