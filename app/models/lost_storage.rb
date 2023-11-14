@@ -21,4 +21,15 @@ class LostStorage < ApplicationRecord
   has_many :projects
 
   validates :name, presence: true
+
+  before_destroy :check_reception_number_prefix
+
+  private
+
+  def check_reception_number_prefix
+    if reception_number_prefix.present? && reception_number_prefix_changed?
+      errors.add(:reception_number_prefix, 'この値は変更/削除できません')
+      throw(:abort)
+    end
+  end
 end
