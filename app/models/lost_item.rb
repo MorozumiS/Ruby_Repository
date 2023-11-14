@@ -27,4 +27,5 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class LostItem < ApplicationRecord
+  validates :name, :place, presence: true
 end
