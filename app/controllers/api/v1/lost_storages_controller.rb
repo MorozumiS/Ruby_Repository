@@ -43,15 +43,14 @@ class Api::V1::LostStoragesController < ApplicationController
     if last_prefix
       last_letter, last_number = last_prefix.to_s.match(/^([A-Z]+)(\d*)$/).captures
       new_number = last_number.empty? ? 1 : last_number.to_i + 1
-      new_letter = new_number > 99999 ? last_letter.next : last_letter
+      new_letter = new_number > 6 ? last_letter.next : last_letter
+      new_number = 1 if new_number > 6
     else
       new_number = 1
-      new_letter = 'A'
+      new_letter = ''
     end
 
-    new_prefix = "#{new_letter}#{format('%05d', new_number)}"
-    new_prefix
-
+    "#{new_letter}#{format('%05d', new_number)}"
   end
 
   def project_code(project)
