@@ -18,5 +18,5 @@
 #  fk_rails_...  (lost_item_id => lost_items.id)
 #
 class LostItemImage < ApplicationRecord
-  validates :id, :content, presence: true
+  validates :lost_item_id, :content, presence: true
 end

@@ -34,8 +34,6 @@ ActiveRecord::Schema.define(version: 2023_11_14_123634) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "lost_storage_id"
     t.bigint "project_id"
-    t.bigint "lost_item_image_id", null: false
-    t.index ["lost_item_image_id"], name: "index_lost_items_on_lost_item_image_id"
     t.index ["lost_storage_id"], name: "index_lost_items_on_lost_storage_id"
     t.index ["project_id"], name: "index_lost_items_on_project_id"
   end

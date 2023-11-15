@@ -5,6 +5,7 @@ Rails.application.routes.draw do
       resources :projects do
         get '/search' => 'projects#search' , on: :collection
         resources :lost_items
+        resources :lost_item_images
       end
     end
   end
