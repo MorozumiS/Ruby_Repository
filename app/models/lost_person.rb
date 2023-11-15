@@ -28,4 +28,9 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class LostPerson < ApplicationRecord
+
+  belongs_to :lost_storage
+
+  validates :name, :kana, :gender, :age, :tall, :reception_at, :status, presence: true
+
 end
