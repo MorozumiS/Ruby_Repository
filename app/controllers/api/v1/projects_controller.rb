@@ -61,7 +61,7 @@ class Api::V1::ProjectsController < ApplicationController
       response_success(@project)
     else
       if @project.errors.full_messages_for(:name)
-        # TODO: エラーメッセージをja.ymlに移行する
+        # TODO: エラーメッセージをja.ymlに移行する 両方足りない場合の処理も
         error =  "会場名が空です"
       elsif @project.errors.full_messages_for(:place)
         # TODO: エラーメッセージをja.ymlに移行する
@@ -81,7 +81,7 @@ class Api::V1::ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit(:name, :start_at, :end_at, :place, :user_id, :created_at, :updated_at, :delete_flg, :discarded_at)
+    params.require(:project).permit(:name, :start_at, :end_at, :place, :execution_date, :user_id, :delete_flg, :discarded_at)
   end
 
   def set_project
