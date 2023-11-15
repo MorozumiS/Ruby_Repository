@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_09_044929) do
+ActiveRecord::Schema.define(version: 2023_11_13_011634) do
 
   create_table "lost_item_images", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "content", null: false
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 2023_11_09_044929) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id"
     t.boolean "delete_flg", default: false, null: false
+    t.date "execution_date"
     t.index ["user_id"], name: "index_projects_on_user_id"
   end
 
