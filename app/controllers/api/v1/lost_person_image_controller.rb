@@ -1,6 +1,6 @@
 class Api::V1::LostPersonImageController < ApplicationController
   before_action :set_lost_person
-  before_action :set_lost_person_image, only: [:show]
+  before_action :set_lost_person_image, only: [:show, :index]
 
   # POST /api/v1/projects/:project_id/lost_person_image
   def create
@@ -10,7 +10,14 @@ class Api::V1::LostPersonImageController < ApplicationController
 
   # GET /api/v1/projects/:project_id/lost_person_image/:id
   def show
-    render json: lost_person_image_response(@lost_person_image)
+    render json: lost_person_image_response(lost_person_image)
+  end
+
+  def index
+    lost_person_image = LostPersonImage.all
+    response_success(lost_person_image)
+    Rails.logger.error("LostPersonImage not found for id=#{params[:id]}")
+
   end
 
   # DELETE /api/v1/projects/:project_id/lost_person_image/:id
@@ -24,7 +31,7 @@ class Api::V1::LostPersonImageController < ApplicationController
   end
 
   def set_lost_person_image
-    @lost_person_image = @lost_person.LostPersonImage.find(params[:id])
+    @lost_person_image = LostPersonImage.find(params[:id])
   end
 
   def lost_person_image_params
