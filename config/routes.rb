@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :projects do
         get '/search' => 'projects#search' , on: :collection
-        resources :lost_person
+        resources :lost_person, :lost_person_image
       end
     end
   end

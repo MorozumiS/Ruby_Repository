@@ -30,6 +30,7 @@
 class LostPerson < ApplicationRecord
 
   belongs_to :lost_storage
+  belongs_to :lost_person_image
 
   validates :name, :kana, :gender, :age, :tall, :reception_at, :status, presence: true
 
