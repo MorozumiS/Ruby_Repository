@@ -5,7 +5,6 @@ Rails.application.routes.draw do
       resources :projects do
         get '/search' => 'projects#search' , on: :collection
         resources :lost_person do
-          resources :lost_person_image
           post 'create_with_image', to: 'lost_person#create_with_image', on: :member
         end
       end

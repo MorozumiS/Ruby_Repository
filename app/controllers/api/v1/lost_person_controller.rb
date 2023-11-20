@@ -2,7 +2,7 @@ class Api::V1::LostPersonController < ApplicationController
   # before_action :set_project
   before_action :set_lost_person, only: [:show]
 
-  # POST /api/v1/projects/:project_id/lost_people
+  # POST /api/v1/projects/:project_id/lost_person
   def create
     lost_person = @project.lost_people.create!(lost_person_params)
     render json: lost_person_response(lost_person), status: :created
@@ -15,12 +15,12 @@ class Api::V1::LostPersonController < ApplicationController
     render json: lost_person_response(lost_person), status: :created
   end
 
-  # GET /api/v1/projects/:project_id/lost_people/:id
+  # GET /api/v1/projects/:project_id/lost_person/:id
   def show
     render json: lost_person_response(@lost_person)
   end
 
-  # DELETE /api/v1/projects/:project_id/lost_people/:id
+  # DELETE /api/v1/projects/:project_id/lost_person/:id
   def destroy
 
   end
@@ -48,7 +48,7 @@ class Api::V1::LostPersonController < ApplicationController
   end
 
   def lost_person_response(lost_person)
-    {
+    response = {
       id: lost_person.id,
       name: lost_person.name,
       kana: lost_person.kana,
@@ -60,8 +60,16 @@ class Api::V1::LostPersonController < ApplicationController
       project_id: lost_person.project_id,
       lost_storage_id: lost_person.lost_storage_id,
       created_at: lost_person.created_at,
-      updated_at: lost_person.updated_at,
-      content: lost_person_image.content
+      updated_at: lost_person.updated_at
     }
+
+    if lost_person.lost_person_images.present?
+      lost_person_image = lost_person.lost_person_images.first
+      response[:content] = lost_person_image.content
+    else
+      response[:content] = nil
+    end
+
+    response
   end
 end
