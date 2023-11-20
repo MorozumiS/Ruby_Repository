@@ -29,6 +29,14 @@
 #
 class LostPerson < ApplicationRecord
 
+  enum status: {
+    safeguard: 0,           # 保護した
+    contacting_guardian: 1, # 保護者に連絡中
+    meeting_guardian: 2,    # 保護者と合流
+    other: 3                # その他
+  }
+
+
   belongs_to :lost_storage
   has_many :lost_person_images, dependent: :destroy
 
