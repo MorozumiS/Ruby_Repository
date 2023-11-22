@@ -7,6 +7,17 @@ class Api::V1::LostItemsController < ApplicationController
     render json: lost_item_response(lost_item), status: :created
   end
 
+  def create_with_image
+    lost_item = LostItem.new(lost_item_params)
+    lost_item_image = lost_item.lost_item_images.build(lost_item_image_params)
+    lost_item_image.save!
+    render json: lost_item_response(lost_item), status: :created
+  end
+
+  def index
+    lost_items = LostItem.all
+    response_success(lost_items)
+  end
   # GET /lost_items/:id
   def show
     render json: lost_item_response(@lost_item)
@@ -30,8 +41,12 @@ class Api::V1::LostItemsController < ApplicationController
     )
   end
 
+  def lost_item_image_params
+    params.require(:lost_item_image).permit(:lost_item_id, :content )
+  end
+
   def lost_item_response(lost_item)
-    {
+    response = {
       id: lost_item.id,
       name: lost_item.name,
       comment: lost_item.comment,
@@ -45,6 +60,13 @@ class Api::V1::LostItemsController < ApplicationController
       created_at: lost_item.created_at,
       updated_at: lost_item.updated_at
     }
-  end
 
+    if lost_item.lost_item_image.present?
+      lost_item_image = lost_item.lost_item_image.first
+      response[:content] = lost_item_image.content
+    else
+      response[:content] = nil
+    end
+    response
+  end
 end
