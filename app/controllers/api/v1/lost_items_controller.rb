@@ -9,9 +9,13 @@ class Api::V1::LostItemsController < ApplicationController
 
   def create_with_image
     lost_item = LostItem.new(lost_item_params)
-    lost_item_image = lost_item.lost_item_images.build(lost_item_image_params)
-    lost_item_image.save!
-    render json: lost_item_response(lost_item), status: :created
+
+    if lost_item.save!
+      lost_item_id = lost_item.id
+      lost_item_image = LostItemImage.new(lost_item_image_params.merge(lost_item_id: lost_item_id))
+      lost_item_image.save!
+      render json: lost_item_response(lost_item), status: :created
+    end
   end
 
   def index
