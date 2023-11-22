@@ -21,6 +21,38 @@ ja:
         place: 場所
         organizer: 主催者
         client: 得意先
+
+      lost_storage:
+        name: 預かり場所名
+        reception_number_prefix: 識別番号
+      
+      lost_item:
+        name: 名前
+        comment: 備考
+        features: 特徴
+        owner_address: 住所
+        owner_name: 持ち主の名前
+        owner_tel: 持ち主の電話番号
+        lost_spot: 見つけた場所
+      
+      lost_item_images:
+        content: 画像
+        lost_item_id: 落とし物のid
+      
+      lost_people:
+        age: 年齢
+        gender: 性別
+        kana: カナ
+        name: 名前
+        reception_at: 発見時刻
+        status: ステータス
+        tall: 身長
+        lost_storage_id: 預かりセンターのid
+      
+      lost_person_images:
+        content: 画像
+        lost_person_id: 迷子のid
+
   response:
     message:
       success: 正常に処理が完了しました
