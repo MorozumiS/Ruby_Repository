@@ -15,8 +15,6 @@ class Api::V1::LostPersonImageController < ApplicationController
   def index
     lost_person_image = LostPersonImage.all
     response_success(@lost_person_image)
-    # Rails.logger.error("LostPersonImage not found for id=#{params[:id]}")
-
   end
 
   # DELETE /api/v1/projects/:project_id/lost_person_image/:id
