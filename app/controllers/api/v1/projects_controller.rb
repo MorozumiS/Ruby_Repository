@@ -17,18 +17,18 @@ class Api::V1::ProjectsController < ApplicationController
   # GET /api/v1/projects/search
   def search
     if params[:name].blank? && params[:place].blank?
-      # TODO: エラーメッセージをja.ymlに移行する
-      return response_custom_error("検索キーワードが提供されていません", :bad_request)
+      error_message = I18n.t('response.message.blank_keywords')
+    return response_custom_error(error_message, :bad_request)
     end
 
     if params[:name].present? && params[:name].length < 3
-      # TODO: エラーメッセージをja.ymlに移行する
-      return response_custom_error("イベント名の文字数が不足しています", :bad_request)
+      error_message = I18n.t('response.message.name_too_short')
+    return response_custom_error(error_message, :bad_request)
     end
 
     if params[:place].present? && params[:place].length < 3
-      # TODO: エラーメッセージをja.ymlに移行する
-      return response_custom_error("会場名の文字数が不足しています", :bad_request)
+      error_message = I18n.t('response.message.place_too_short')
+    return response_custom_error(error_message, :bad_request)
     end
 
     name_query = params[:name].present? ?  params[:name] + "%" : nil
@@ -44,11 +44,6 @@ class Api::V1::ProjectsController < ApplicationController
 
   # POST /api/v1/projects
   def create
-    # project = Project.new(project_params)
-    # if project.save!
-    #   response_success(project)
-    # end
-
     # MEMO: こちらの方がいいと思います（処理は同じです）
     # TODO: ログインユーザーのIDを一緒に保存
     project = Project.create!(project_params)
@@ -57,16 +52,16 @@ class Api::V1::ProjectsController < ApplicationController
 
   # PATCH /api/v1/projects/:id
   def update
-    if @project.update!(project_params)
+    if @project.update(project_params)
       response_success(@project)
     else
-      if @project.errors.full_messages_for(:name)
-        # TODO: エラーメッセージをja.ymlに移行する 両方足りない場合の処理も
-        error =  "会場名が空です"
-      elsif @project.errors.full_messages_for(:place)
-        # TODO: エラーメッセージをja.ymlに移行する
-        error =  "場所名が空です"
-      end
+      error = if @project.errors.full_messages_for(:name).present? && @project.errors.full_messages_for(:place).present?
+                I18n.t('response.message.both_blank')
+              elsif @project.errors.full_messages_for(:name).present?
+                I18n.t('response.message.name_blank')
+              elsif @project.errors.full_messages_for(:place).present?
+                I18n.t('response.message.place_blank')
+              end
       render json: { error: error}, status: :unprocessable_entity
     end
   end
