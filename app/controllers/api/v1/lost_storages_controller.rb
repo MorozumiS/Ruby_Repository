@@ -7,7 +7,7 @@ class Api::V1::LostStoragesController < ApplicationController
   # POST /api/v1/projects/:project_id/lost_storages
   def create
     lost_storage = @project.lost_storages.build(lost_storage_params)
-    lost_storage.reception_number_prefix = generate_reception_number_prefix
+    lost_storage.reception_number_prefix = LostStorage.generate_reception_number_prefix(@project)
 
     lost_storage.save!
       render json: lost_storage_response(lost_storage), status: :created
@@ -37,26 +37,6 @@ class Api::V1::LostStoragesController < ApplicationController
 
   def lost_storage_params
     params.require(:lost_storages).permit(:name)
-  end
-
-  def generate_reception_number_prefix
-    last_prefix = LostStorage.where(project_id: @project.id).maximum(:reception_number_prefix)
-
-    if last_prefix
-      last_letter, last_number = last_prefix.to_s.match(/^([A-Z]+)(\d*)$/).captures
-      new_number = last_number.empty? ? 1 : last_number.to_i + 1
-      new_letter = new_number > MAX_NUMBER ? last_letter.next : last_letter
-      new_number = 1 if new_number > MAX_NUMBER
-    else
-      new_number = 1
-      new_letter = ''
-    end
-
-    "#{new_letter}#{format('%05d', new_number)}"
-  end
-
-  def project_code(project)
-    project.name[0].upcase
   end
 
   def lost_storage_response(lost_storage)
