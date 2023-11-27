@@ -6,11 +6,11 @@
 #  comment         :string(255)
 #  discarded_at    :datetime
 #  features        :string(255)
+#  lost_spot       :string(255)      not null
 #  name            :string(255)      not null
 #  owner_address   :string(255)
 #  owner_name      :string(255)
 #  owner_tel       :string(255)
-#  place           :string(255)      not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  lost_storage_id :bigint
@@ -27,4 +27,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class LostItem < ApplicationRecord
+  has_many :lost_item_images, dependent: :destroy
+
+  validates :name, :lost_spot, :lost_storage_id, presence: true
 end
