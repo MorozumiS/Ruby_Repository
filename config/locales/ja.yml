@@ -60,3 +60,9 @@ ja:
       not_found: 参照されたデータは存在しません
       permission_denied: アクセス権限がありません
       internal_server_error: Internal Server Error
+      blank_keywords: 検索キーワードが提供されていません
+      name_too_short: "イベント名の文字数が不足しています"
+      place_too_short: "会場名の文字数が不足しています"
+      name_blank: "会場名が空です"
+      place_blank: "場所名が空です"
+      both_blank: "会場名と場所名が空です"
