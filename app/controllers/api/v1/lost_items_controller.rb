@@ -66,8 +66,7 @@ class Api::V1::LostItemsController < ApplicationController
     }
 
     if lost_item.lost_item_images.present?
-      lost_item_image = lost_item.lost_item_images.first
-      response[:content] = lost_item_image.content
+      response[:content] = lost_item.lost_item_images.map(&:content)
     else
       response[:content] = nil
     end
