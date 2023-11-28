@@ -36,8 +36,8 @@ class LostPerson < ApplicationRecord
     other: 3                # その他
   }
 
-
   belongs_to :lost_storage
+  belongs_to :project
   has_many :lost_person_images, dependent: :destroy
 
   validates :name, :kana, :gender, :age, :tall, :reception_at, :status, presence: true
