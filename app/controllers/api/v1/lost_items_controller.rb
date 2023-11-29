@@ -29,7 +29,9 @@ class Api::V1::LostItemsController < ApplicationController
 
   # DELETE /lost_items/:id
   def destroy
-
+    if @lost_item.update!(discarded_at: Time.current) && @lost_item.lost_item_images.update_all(discarded_at: Time.current)
+      render json: lost_item_response(@lost_item), status: :ok
+    end
   end
 
   private
