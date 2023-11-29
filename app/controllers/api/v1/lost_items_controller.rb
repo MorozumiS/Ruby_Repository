@@ -30,7 +30,10 @@ class Api::V1::LostItemsController < ApplicationController
   # DELETE /lost_items/:id
   def destroy
     if @lost_item.update!(discarded_at: Time.current) && @lost_item.lost_item_images.update_all(discarded_at: Time.current)
-      render json: lost_item_response(@lost_item), status: :ok
+      @lost_item.lost_item_images.each do |image|
+        image.update!(discarded_at: Time.current)
+      end
+      render json: lost_item_response_with_discarded_at(@lost_item), status: :ok
     end
   end
 
@@ -49,6 +52,12 @@ class Api::V1::LostItemsController < ApplicationController
 
   def lost_item_image_params
     params.require(:lost_item_image).permit(:lost_item_id, :content )
+  end
+
+  def lost_item_response_with_discarded_at(lost_item)
+    response = lost_item_response(lost_item)
+    response[:discarded_at] = lost_item.discarded_at
+    response
   end
 
   def lost_item_response(lost_item)
