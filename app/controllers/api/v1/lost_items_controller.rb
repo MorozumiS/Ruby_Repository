@@ -29,11 +29,16 @@ class Api::V1::LostItemsController < ApplicationController
 
   # DELETE /lost_items/:id
   def destroy
-    if @lost_item.update!(discarded_at: Time.current) && @lost_item.lost_item_images.update_all(discarded_at: Time.current)
-      @lost_item.lost_item_images.each do |image|
-        image.update!(discarded_at: Time.current)
+    set_lost_item
+    if @lost_item
+      if @lost_item.update(discarded_at: Time.current) && @lost_item.lost_item_images.update_all(discarded_at: Time.current)
+        @lost_item.lost_item_images.each do |image|
+          image.update(discarded_at: Time.current)
+        end
+        render json: lost_item_response_with_discarded_at(@lost_item), status: :ok
       end
-      render json: lost_item_response_with_discarded_at(@lost_item), status: :ok
+    else
+      render_error_response('not_item', :not_found)
     end
   end
 
