@@ -66,3 +66,7 @@ ja:
       name_blank: "会場名が空です"
       place_blank: "場所名が空です"
       both_blank: "会場名と場所名が空です"
+      not_item: "落とし物が存在しません"
+      not_project: "プロジェクトが存在しません"
+      not_strage: "預かりセンターが存在しません"
+      not_client: "クライアントが存在しません"

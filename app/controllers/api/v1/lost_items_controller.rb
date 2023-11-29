@@ -83,4 +83,9 @@ class Api::V1::LostItemsController < ApplicationController
     end
     response
   end
+
+  def render_error_response(message_key, status)
+    message = I18n.t("response.message.#{message_key}")
+    render json: { error: message }, status: status
+  end
 end
