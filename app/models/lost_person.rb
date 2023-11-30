@@ -41,5 +41,4 @@ class LostPerson < ApplicationRecord
   has_many :lost_person_images, dependent: :destroy
 
   validates :name, :kana, :gender, :age, :tall, :reception_at, :status, presence: true
-
 end

@@ -7,6 +7,8 @@ Rails.application.routes.draw do
         resources :lost_items do
           post 'create_with_image', to: 'lost_items#create_with_image', on: :member
         end
+        resources :lost_person do
+        end
       end
     end
   end

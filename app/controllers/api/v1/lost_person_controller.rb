@@ -1,6 +1,6 @@
 class Api::V1::LostPersonController < ApplicationController
   before_action :set_project
-  before_action :set_lost_person, only: [:show]
+  before_action :set_lost_person, only: [:show,:update]
 
   # POST /api/v1/projects/:project_id/lost_person
   def create
@@ -26,6 +26,21 @@ class Api::V1::LostPersonController < ApplicationController
     response_success(lost_person)
   end
 
+  def update
+    return render_error_response('not_lost_person',:not_found) unless @lost_person
+
+    if @lost_person.update!(lost_person_params)
+      @lost_person.lost_person_images.each do |image|
+        new_content = params.dig(:lost_person_image,:content)  # params から content を取得
+      image.assign_attributes(content: new_content,updated_at: Time.current)
+      image.save!
+      end
+      puts @lost_person.errors.full_messages
+      render json: lost_person_response(@lost_person, @lost_person.lost_person_images), status: :ok
+    end
+  end
+
+
   private
 
   def set_project
@@ -46,6 +61,11 @@ class Api::V1::LostPersonController < ApplicationController
 
   def lost_person_image_params
     params.require(:lost_person_image).permit(:content, :lost_person_id)
+  end
+
+  def render_error_response(message_key, status)
+    message = I18n.t("response.message.#{message_key}")
+    render json: { error: message }, status: status
   end
 
   def lost_person_response(lost_person,lost_person_image)
