@@ -35,7 +35,7 @@ class Api::V1::LostItemsController < ApplicationController
         @lost_item.lost_item_images.each do |image|
           image.update(discarded_at: Time.current)
         end
-        render json: lost_item_response_with_discarded_at(@lost_item), status: :ok
+        render json: lost_item_response_destroy(@lost_item), status: :ok
       end
     else
       render_error_response('not_item', :not_found)
@@ -59,10 +59,14 @@ class Api::V1::LostItemsController < ApplicationController
     params.require(:lost_item_image).permit(:lost_item_id, :content )
   end
 
-  def lost_item_response_with_discarded_at(lost_item)
-    response = lost_item_response(lost_item)
-    response[:discarded_at] = lost_item.discarded_at
-    response
+  def lost_item_response_destroy(lost_item)
+    {id: lost_item.id,
+    name: lost_item.name,
+    project_id: lost_item.project_id,
+    lost_storage_id: lost_item.lost_storage_id,
+    created_at: lost_item.created_at,
+    updated_at: lost_item.updated_at,
+    discarded_at: lost_item.discarded_at}
   end
 
   def lost_item_response(lost_item)
