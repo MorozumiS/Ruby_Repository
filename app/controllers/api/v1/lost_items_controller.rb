@@ -30,16 +30,19 @@ class Api::V1::LostItemsController < ApplicationController
   # DELETE /lost_items/:id
   def destroy
     set_lost_item
-
-    return render_error_response('not_item', :not_found) unless @lost_item
-    return render_error_response('not_project', :not_found) unless @lost_item.project_id
-    return render_error_response('not_strage', :not_found) unless @lost_item.lost_storage_id
-
-    if @lost_item.update!(discarded_at: Time.current) && @lost_item.lost_item_images.update_all(discarded_at: Time.current)
-      @lost_item.lost_item_images.each do |image|
-        image.update!(discarded_at: Time.current)
+    if !@lost_item
+      render_error_response('not_item', :not_found)
+    elsif !@lost_item.project_id
+      render_error_response('not_project', :not_found)
+    elsif !@lost_item.lost_storage_id
+      render_error_response('not_storage', :not_found)
+    else
+      if @lost_item.update!(discarded_at: Time.current) && @lost_item.lost_item_images.update_all(discarded_at: Time.current)
+        @lost_item.lost_item_images.each do |image|
+          image.update!(discarded_at: Time.current)
+        end
+        render json: lost_item_response_destroy(@lost_item), status: :ok
       end
-      render json: lost_item_response_destroy(@lost_item), status: :ok
     end
   end
 
