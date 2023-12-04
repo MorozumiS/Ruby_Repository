@@ -4,6 +4,17 @@ class Api::V1::LostStoragesController < ApplicationController
 
   MAX_NUMBER = 6
 
+  # GET /api/v1/projects/:project_id/lost_storages/
+  def index
+    lostStorage = LostStorage.all
+    render status: :ok, json: { status: 200, data: lostStorage }
+  end
+
+  # GET /api/v1/projects/:project_id/lost_storages/:id
+  def show
+    render json: lost_storage_response(@lost_storage)
+  end
+
   # POST /api/v1/projects/:project_id/lost_storages
   def create
     lost_storage = @project.lost_storages.build(lost_storage_params)
@@ -12,17 +23,6 @@ class Api::V1::LostStoragesController < ApplicationController
     lost_storage.save!
       render json: lost_storage_response(lost_storage), status: :created
     end
-  end
-
-  # GET /api/v1/projects/:project_id/lost_storages/:id
-  def show
-    render json: lost_storage_response(@lost_storage)
-  end
-
-  # GET /api/v1/projects/:project_id/lost_storages/
-  def index
-    lostStorage = LostStorage.all
-    render status: :ok, json: { status: 200, data: lostStorage }
   end
 
   private
