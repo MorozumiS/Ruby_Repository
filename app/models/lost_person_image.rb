@@ -18,4 +18,8 @@
 #  fk_rails_...  (lost_person_id => lost_people.id)
 #
 class LostPersonImage < ApplicationRecord
+
+  belongs_to :lost_person
+
+  validates :content, presence: true
 end
