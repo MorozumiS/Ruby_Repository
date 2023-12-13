@@ -14,6 +14,7 @@
 #  tall            :string(255)      not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  client_id       :bigint
 #  lost_storage_id :bigint
 #  project_id      :bigint
 #
