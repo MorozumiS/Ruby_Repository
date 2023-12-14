@@ -1,5 +1,5 @@
 class Api::V1::LostPersonImageController < ApplicationController
-  before_action :set_lost_person_image, only: [:show, :index]
+  before_action :set_lost_person_image, only: [:show]
 
   # POST /api/v1/projects/:project_id/lost_person_image
   def create
@@ -14,7 +14,7 @@ class Api::V1::LostPersonImageController < ApplicationController
 
   def index
     lost_person_image = LostPersonImage.all
-    response_success(@lost_person_image)
+    response_success(lost_person_image)
   end
 
   # DELETE /api/v1/projects/:project_id/lost_person_image/:id

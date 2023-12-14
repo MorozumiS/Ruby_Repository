@@ -18,12 +18,12 @@ class Api::V1::LostPersonController < ApplicationController
 
   # GET /api/v1/projects/:project_id/lost_person/:id
   def show
-    render json: lost_person_response(@lost_person)
+    render json: lost_person_response(@lost_person,@lost_person_image), status: :ok
   end
 
   def index
-    lost_person = LostPerson.all
-    response_success(lost_person)
+    lost_people = LostPerson.includes(:client).all
+    response_success(lost_people)
   end
 
   def update
@@ -56,7 +56,7 @@ class Api::V1::LostPersonController < ApplicationController
   end
 
   def lost_person_params
-    params.require(:lost_person).permit(:name, :kana, :gender, :age, :tall, :reception_at, :status, :lost_storage_id, :project_id)
+    params.require(:lost_person).permit(:name, :kana, :gender, :age, :tall, :reception_at, :status, :lost_storage_id, :project_id, :client_id)
   end
 
   def lost_person_image_params
@@ -81,14 +81,14 @@ class Api::V1::LostPersonController < ApplicationController
       project_id: lost_person.project_id,
       lost_storage_id: lost_person.lost_storage_id,
       created_at: lost_person.created_at,
-      updated_at: lost_person.updated_at
+      updated_at: lost_person.updated_at,
+      client_id: lost_person.client_id,
+      user_name: lost_person.client&.name,
     }
 
-    if lost_person_image.present? && lost_person_image.respond_to?(:map)
-      response[:content] = lost_person_image.map(&:content)
-    else
-      response[:content] = nil
-    end
+    lost_person_images = lost_person.lost_person_images.map { |image| { content: image.content } }
+    response[:content] = lost_person_images
+
     response
   end
 end
