@@ -13,12 +13,12 @@ class Api::V1::LostPersonController < ApplicationController
     lost_person_image = lost_person.lost_person_images.build(lost_person_image_params)
     lost_person_image.save!
     set_lost_person_image
-    render json: lost_person_response(lost_person,@lost_person_image), status: :created
+    render json: lost_person_response(@lost_person), status: :created
   end
 
   # GET /api/v1/projects/:project_id/lost_person/:id
   def show
-    render json: lost_person_response(@lost_person,@lost_person_image), status: :ok
+    render json: lost_person_response(@lost_person), status: :ok
   end
 
   def index
@@ -31,12 +31,12 @@ class Api::V1::LostPersonController < ApplicationController
 
     if @lost_person.update!(lost_person_params)
       @lost_person.lost_person_images.each do |image|
-        new_content = params.dig(:lost_person_image,:content)  # params から content を取得
-      image.assign_attributes(content: new_content,updated_at: Time.current)
-      image.save!
+        new_content = params.dig(:lost_person_image,:content)
+        image.assign_attributes(content: new_content,updated_at: Time.current)
+        image.save!
       end
       puts @lost_person.errors.full_messages
-      render json: lost_person_response(@lost_person, @lost_person.lost_person_images), status: :ok
+      render json: lost_person_response(@lost_person), status: :ok
     end
   end
 
@@ -63,12 +63,7 @@ class Api::V1::LostPersonController < ApplicationController
     params.require(:lost_person_image).permit(:content, :lost_person_id)
   end
 
-  def render_error_response(message_key, status)
-    message = I18n.t("response.message.#{message_key}")
-    render json: { error: message }, status: status
-  end
-
-  def lost_person_response(lost_person,lost_person_image)
+  def lost_person_response(lost_person)
     response = {
       id: lost_person.id,
       name: lost_person.name,
@@ -83,11 +78,9 @@ class Api::V1::LostPersonController < ApplicationController
       created_at: lost_person.created_at,
       updated_at: lost_person.updated_at,
       client_id: lost_person.client_id,
-      user_name: lost_person.client&.name,
+      user_name: lost_person.client.name,
     }
-
-    lost_person_images = lost_person.lost_person_images.map { |image| { content: image.content } }
-    response[:content] = lost_person_images
+    response[:content] = lost_person.lost_person_images.map { |image| { content: image.content } }
 
     response
   end
