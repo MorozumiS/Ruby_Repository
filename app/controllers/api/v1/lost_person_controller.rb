@@ -35,7 +35,6 @@ class Api::V1::LostPersonController < ApplicationController
         image.assign_attributes(content: new_content,updated_at: Time.current)
         image.save!
       end
-      puts @lost_person.errors.full_messages
       render json: lost_person_response(@lost_person), status: :ok
     end
   end
