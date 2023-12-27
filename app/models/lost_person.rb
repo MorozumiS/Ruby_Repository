@@ -14,16 +14,19 @@
 #  tall            :string(255)      not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  client_id       :bigint
 #  lost_storage_id :bigint
 #  project_id      :bigint
 #
 # Indexes
 #
+#  index_lost_people_on_client_id        (client_id)
 #  index_lost_people_on_lost_storage_id  (lost_storage_id)
 #  index_lost_people_on_project_id       (project_id)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (client_id => users.id)
 #  fk_rails_...  (lost_storage_id => lost_storages.id)
 #  fk_rails_...  (project_id => projects.id)
 #
@@ -40,6 +43,7 @@ class LostPerson < ApplicationRecord
   belongs_to :project
   has_many :lost_person_images, dependent: :destroy
 
-  validates :name, :kana, :gender, :age, :tall, :reception_at, :status, presence: true
+  belongs_to :client, class_name: 'User', foreign_key: 'client_id'
 
+  validates :name, :kana, :gender, :age, :tall, :reception_at, :status, presence: true
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_14_123634) do
+ActiveRecord::Schema.define(version: 2023_12_13_061536) do
 
   create_table "lost_item_images", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "content", null: false
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(version: 2023_11_14_123634) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "lost_storage_id"
     t.bigint "project_id"
+    t.bigint "client_id"
+    t.index ["client_id"], name: "index_lost_people_on_client_id"
     t.index ["lost_storage_id"], name: "index_lost_people_on_lost_storage_id"
     t.index ["project_id"], name: "index_lost_people_on_project_id"
   end
@@ -109,6 +111,7 @@ ActiveRecord::Schema.define(version: 2023_11_14_123634) do
   add_foreign_key "lost_items", "projects"
   add_foreign_key "lost_people", "lost_storages"
   add_foreign_key "lost_people", "projects"
+  add_foreign_key "lost_people", "users", column: "client_id"
   add_foreign_key "lost_person_images", "lost_people"
   add_foreign_key "lost_storages", "projects"
   add_foreign_key "projects", "users"
