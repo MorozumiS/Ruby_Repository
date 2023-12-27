@@ -29,7 +29,21 @@ class Api::V1::LostItemsController < ApplicationController
 
   # DELETE /lost_items/:id
   def destroy
-
+    set_lost_item
+    if !@lost_item
+      render_error_response('not_item', :not_found)
+    elsif !@lost_item.project_id
+      render_error_response('not_project', :not_found)
+    elsif !@lost_item.lost_storage_id
+      render_error_response('not_storage', :not_found)
+    else
+      if @lost_item.update!(discarded_at: Time.current) && @lost_item.lost_item_images.update_all(discarded_at: Time.current)
+        @lost_item.lost_item_images.each do |image|
+          image.update!(discarded_at: Time.current)
+        end
+        render json: lost_item_response_destroy(@lost_item), status: :ok
+      end
+    end
   end
 
   private
@@ -47,6 +61,16 @@ class Api::V1::LostItemsController < ApplicationController
 
   def lost_item_image_params
     params.require(:lost_item_image).permit(:lost_item_id, :content )
+  end
+
+  def lost_item_response_destroy(lost_item)
+    {id: lost_item.id,
+    name: lost_item.name,
+    project_id: lost_item.project_id,
+    lost_storage_id: lost_item.lost_storage_id,
+    created_at: lost_item.created_at,
+    updated_at: lost_item.updated_at,
+    discarded_at: lost_item.discarded_at}
   end
 
   def lost_item_response(lost_item)
@@ -71,5 +95,10 @@ class Api::V1::LostItemsController < ApplicationController
       response[:content] = nil
     end
     response
+  end
+
+  def render_error_response(message_key, status)
+    message = I18n.t("response.message.#{message_key}")
+    render json: { error: message }, status: status
   end
 end
