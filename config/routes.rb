@@ -4,10 +4,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :projects do
         get '/search' => 'projects#search' , on: :collection
-        resources :lost_items do
+        resources :lost_items do#TODO: create_with_imageは削除する
           post 'create_with_image', to: 'lost_items#create_with_image', on: :member
         end
-        resources :lost_person do
+        resources :lost_person do#TODO: create_with_imageは削除する
           post 'create_with_image', to: 'lost_person#create_with_image', on: :member
         end
       end

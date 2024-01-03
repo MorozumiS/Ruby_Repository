@@ -7,6 +7,7 @@ class Api::V1::LostItemsController < ApplicationController
     render json: lost_item_response(lost_item), status: :created
   end
 
+  # TODO: ここはcreateと同じ処理の中で、lost_item_imagesテーブルに保存するようにしてください
   def create_with_image
     lost_item = LostItem.new(lost_item_params)
 
@@ -63,6 +64,7 @@ class Api::V1::LostItemsController < ApplicationController
     params.require(:lost_item_image).permit(:lost_item_id, :content )
   end
 
+  # TODO: 書き方がおかしいので修正する＆active_model_serializersを使用するようにして下さい
   def lost_item_response_destroy(lost_item)
     {id: lost_item.id,
     name: lost_item.name,
