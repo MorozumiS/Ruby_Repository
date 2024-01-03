@@ -29,6 +29,9 @@ gem 'carrierwave'
 gem 'carrierwave-base64'
 gem 'mini_magick'
 
+# json整形
+gem 'active_model_serializers'
+
 # 認証
 gem 'devise'
 

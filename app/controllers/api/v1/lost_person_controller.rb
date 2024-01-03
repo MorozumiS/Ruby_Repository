@@ -1,3 +1,4 @@
+# TODO: コントローラー名は複数形にするのが一般的です（lost_people_controller.rb）
 class Api::V1::LostPersonController < ApplicationController
   before_action :set_project
   before_action :set_lost_person, only: [:show,:update]
@@ -8,6 +9,7 @@ class Api::V1::LostPersonController < ApplicationController
     render json: lost_person_response(lost_person), status: :created
   end
 
+  # TODO: ここはcreateと同じ処理の中で、lost_person_imagesテーブルに保存するようにしてください
   def create_with_image
     lost_person = LostPerson.new(lost_person_params)
     lost_person_image = lost_person.lost_person_images.build(lost_person_image_params)
@@ -21,11 +23,14 @@ class Api::V1::LostPersonController < ApplicationController
     render json: lost_person_response(@lost_person), status: :ok
   end
 
+  # TODO: APIのエンドポイントのコメントを追加して下さい
   def index
     lost_people = LostPerson.includes(:client).all
-    response_success(lost_people)
+    # response_success(lost_people)
+    render json: lost_people, each_serializer: LostPersonSerializer
   end
 
+  # TODO: APIのエンドポイントのコメントを追加して下さい
   def update
     return render_error_response('not_lost_person',:not_found) unless @lost_person
 
@@ -62,6 +67,8 @@ class Api::V1::LostPersonController < ApplicationController
     params.require(:lost_person_image).permit(:content, :lost_person_id)
   end
 
+  # TODO: active_model_serializersを使用するようにして下さい(他の箇所も全部対応して下さい)
+  # 参考: https://zenn.dev/emono/articles/8211ad5ec036e9
   def lost_person_response(lost_person)
     response = {
       id: lost_person.id,
@@ -79,8 +86,10 @@ class Api::V1::LostPersonController < ApplicationController
       client_id: lost_person.client_id,
       user_name: lost_person.client.name,
     }
+    # TODO: ここもresponseに含めるようにして下さい（別の処理にしないでください）
     response[:content] = lost_person.lost_person_images.map { |image| { content: image.content } }
 
+    # TODO: Rubyは最後の行の戻り値を返すので、returnは不要です
     response
   end
 end
