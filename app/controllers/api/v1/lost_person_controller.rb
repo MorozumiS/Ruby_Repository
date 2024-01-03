@@ -30,7 +30,7 @@ class Api::V1::LostPersonController < ApplicationController
     render json: lost_people, each_serializer: LostPersonSerializer
   end
 
-  # TODO: APIのエンドポイントのコメントを追加して下さい
+  # TODO: APIのエンドポイントをコメントで追加して下さい(他の箇所も全部対応して下さい)
   def update
     return render_error_response('not_lost_person',:not_found) unless @lost_person
 
