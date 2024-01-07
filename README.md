@@ -37,7 +37,9 @@
       - フレームワーク: Ruby on Railsを使用するものとする。
       - フロントエンドは実装しない。
       - Ruby 2.7.4
-      - Rails 6系
+      - Rails 6.1.7.4
+      - DBはMySQL
+      - テストはRSpec
       - 認証
         - devise
       - 論理削除
