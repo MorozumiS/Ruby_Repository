@@ -44,8 +44,11 @@ gem 'rails-i18n'
 # ページネーション
 gem 'kaminari'
 
-# フォーマット
+# コード規約
 gem 'rubocop', require: false
+
+# DB監視
+gem "audited"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
