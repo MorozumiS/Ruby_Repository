@@ -40,6 +40,30 @@
       - Rails 6.1.7.4
       - DBはMySQL
       - テストはRSpec
+      - formatterはrubocop
+         - rubocop-rails
+         - rubocop
+         - rubocop使用方法
+            - スタート
+               - `docker-compose exec app rubocop`
+            - 自動修正
+               - `docker-compose exec app rubocop -a`
+            - 特定のファイルのみ確認
+               - `docker-compose exec app rubocop 特定のファイルのパス`
+            - 警告レベル
+               F Fatal
+               E Error
+               W Warning
+
+               ↑ 修正すべき
+               --- 壁 ---
+               ↓ 修正の余地あり
+
+               C Convention
+               R Refactor
+         - PR作成する前に必ずrubocopを実行してください
+            - F. E. W. は修正してください
+
       - 認証
         - devise
       - 論理削除

@@ -2,9 +2,8 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # NOTE:
-  # アプリ起動時には読み込む必要がないものにrequire: falseを指定することで,
-  # 起動時のメモリ消費を抑え、アプリケーションの起動速度を向上させることができる。
-# :NOTE
+# アプリ起動時には読み込む必要がないものにrequire: falseを指定することで,
+# 起動時のメモリ消費を抑え、アプリケーションの起動速度を向上させることができる。
 
 ruby '2.7.4'
 
@@ -44,11 +43,8 @@ gem 'rails-i18n'
 # ページネーション
 gem 'kaminari'
 
-# コード規約
-gem 'rubocop', require: false
-
 # DB監視
-gem "audited"
+gem 'audited'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -58,12 +54,19 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'byebug', platforms: %i[mri mingw x64_mingw]
   # DBの情報をコメントとして書き込む
   gem 'annotate'
   # デバック
-  gem 'pry-rails'
   gem 'pry-byebug'
+  gem 'pry-rails'
+
+  # コード規約
+  # 生Rubyに関わる構文規則チェック
+  gem 'rubocop', require: false
+  # Railsに関わる構文規則チェック
+  gem 'rubocop-rails', require: false
+
 end
 
 group :development do
@@ -73,4 +76,4 @@ group :development do
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
