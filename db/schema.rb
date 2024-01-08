@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_07_153054) do
+ActiveRecord::Schema.define(version: 2024_01_08_132342) do
 
   create_table "audits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "auditable_id"
@@ -118,13 +118,11 @@ ActiveRecord::Schema.define(version: 2024_01_07_153054) do
     t.string "email", null: false
     t.integer "role", null: false
     t.string "tel", null: false
-    t.string "password", null: false
-    t.string "password_confirmation", null: false
-    t.string "uid", default: "", null: false
     t.datetime "discarded_at"
     t.datetime "last_sign_in_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "password_digest"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

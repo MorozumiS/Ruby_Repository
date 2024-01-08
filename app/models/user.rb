@@ -2,19 +2,17 @@
 #
 # Table name: users
 #
-#  id                    :bigint           not null, primary key
-#  discarded_at          :datetime
-#  email                 :string(255)      not null
-#  kana                  :string(255)      not null
-#  last_sign_in_at       :datetime
-#  name                  :string(255)      not null
-#  password              :string(255)      not null
-#  password_confirmation :string(255)      not null
-#  role                  :integer          not null
-#  tel                   :string(255)      not null
-#  uid                   :string(255)      default(""), not null
-#  created_at            :datetime         not null
-#  updated_at            :datetime         not null
+#  id              :bigint           not null, primary key
+#  discarded_at    :datetime
+#  email           :string(255)      not null
+#  kana            :string(255)      not null
+#  last_sign_in_at :datetime
+#  name            :string(255)      not null
+#  password_digest :string(255)
+#  role            :integer          not null
+#  tel             :string(255)      not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 # Indexes
 #
@@ -24,6 +22,9 @@ class User < ApplicationRecord
   # 全てのカラム・アクションを監視
   # TODO: これを参考に、他のモデルにも同様の記述を追加して下さい
   audited
+
+  # passwordをハッシュ化して保存する
+  has_secure_password
 
   has_many :projects
   has_many :lost_people, foreign_key: 'client_id'
