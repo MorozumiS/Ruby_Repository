@@ -4,7 +4,7 @@ class ApplicationController < ActionController::API
 
   # エラーハンドリング
   # rescue_from StandardError, with: :response_internal_server_error
-  rescue_from ActiveRecord::RecordNotFound , with: :record_not_found
+  rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
   rescue_from ActiveRecord::RecordInvalid, with: :unpermitted_parameters
 
   # MEMO: 仮実装(ログインユーザー)
@@ -12,7 +12,7 @@ class ApplicationController < ActionController::API
     @current_user ||= User.find(1)
   end
 
-private
+  private
 
   # 200 Success
   def response_success(data)

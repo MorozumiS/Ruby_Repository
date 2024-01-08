@@ -21,7 +21,6 @@
 #  index_users_on_email  (email) UNIQUE
 #
 class User < ApplicationRecord
-
   # 全てのカラム・アクションを監視
   # TODO: これを参考に、他のモデルにも同様の記述を追加して下さい
   audited
@@ -29,8 +28,8 @@ class User < ApplicationRecord
   has_many :projects
   has_many :lost_people, foreign_key: 'client_id'
 
-  validates :name, :email , presence: true
-  validates :email, :tel , uniqueness: true
+  validates :name, :email, presence: true
+  validates :email, :tel, uniqueness: true
   # TODO: 後に追加する
   # validates :name, :role ,:uid, presence: true
   # validates :email, presence: true, uniqueness: true

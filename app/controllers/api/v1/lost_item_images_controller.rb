@@ -1,5 +1,5 @@
 class Api::V1::LostItemImagesController < ApplicationController
-  before_action :set_lost_item_image, only: [:show, :destroy]
+  before_action :set_lost_item_image, only: %i[show destroy]
 
   # POST /lost_item_images
   def create
@@ -13,9 +13,7 @@ class Api::V1::LostItemImagesController < ApplicationController
   end
 
   # DELETE /lost_item_images/:id
-  def destroy
-
-  end
+  def destroy; end
 
   private
 
