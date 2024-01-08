@@ -54,15 +54,11 @@
                F Fatal
                E Error
                W Warning
-
-               ↑ 修正すべき
-               --- 壁 ---
-               ↓ 修正の余地あり
-
                C Convention
                R Refactor
          - PR作成する前に必ずrubocopを実行してください
-            - F. E. W. は修正してください
+            - 全部修正してからPRを作成してください
+               - PRにスクショを貼ってください
 
       - 認証
         - devise
