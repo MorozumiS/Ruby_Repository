@@ -1,4 +1,5 @@
 # Create users
+# TODO: パスワードをハッシュ化する(要変更)
 User.create!(
   name: '管理者太郎',
   email: 'test@gmail.com',
@@ -6,7 +7,15 @@ User.create!(
   role: 1,
   tel: '09012345678',
   password: 'password',
-  password_confirmation: 'password'
+)
+
+User.create!(
+  name: 'ゲスト太郎',
+  email: 'test2@gmail.com',
+  kana: 'ゲストタロウ',
+  role: 0,
+  tel: '09012345672',
+  password: 'password',
 )
 
 # Create projects
