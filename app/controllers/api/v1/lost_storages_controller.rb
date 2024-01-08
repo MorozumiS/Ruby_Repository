@@ -21,8 +21,7 @@ class Api::V1::LostStoragesController < ApplicationController
     lost_storage.reception_number_prefix = LostStorage.generate_reception_number_prefix(@project)
 
     lost_storage.save!
-      render json: lost_storage_response(lost_storage), status: :created
-    end
+    render json: lost_storage_response(lost_storage), status: :created
   end
 
   private

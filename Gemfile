@@ -66,7 +66,6 @@ group :development, :test do
   gem 'rubocop', require: false
   # Railsに関わる構文規則チェック
   gem 'rubocop-rails', require: false
-
 end
 
 group :development do

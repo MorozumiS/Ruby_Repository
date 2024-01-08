@@ -26,7 +26,7 @@ class Project < ApplicationRecord
   has_many :users
   has_many :lost_people
 
-  validates :name, :place , presence: true
+  validates :name, :place, presence: true
 
   # TODO: scopeを使って、削除済みのイベントを除外する
 

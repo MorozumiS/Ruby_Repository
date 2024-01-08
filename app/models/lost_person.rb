@@ -31,7 +31,6 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class LostPerson < ApplicationRecord
-
   enum status: {
     safeguard: 0,           # 保護した
     contacting_guardian: 1, # 保護者に連絡中
@@ -43,7 +42,7 @@ class LostPerson < ApplicationRecord
   belongs_to :project
   has_many :lost_person_images, dependent: :destroy
 
-  belongs_to :client, class_name: 'User', foreign_key: 'client_id'
+  belongs_to :client, class_name: 'User'
 
   validates :name, :kana, :gender, :age, :tall, :reception_at, :status, presence: true
 end

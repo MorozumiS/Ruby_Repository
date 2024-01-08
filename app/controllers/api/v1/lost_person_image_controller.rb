@@ -18,8 +18,7 @@ class Api::V1::LostPersonImageController < ApplicationController
   end
 
   # DELETE /api/v1/projects/:project_id/lost_person_image/:id
-  def destroy
-  end
+  def destroy; end
 
   private
 
