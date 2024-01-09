@@ -1,5 +1,5 @@
 class Api::V1::LostItemsController < ApplicationController
-  before_action :set_lost_item, only: [:show, :destroy]
+  before_action :set_lost_item, only: %i[show destroy]
 
   # POST /lost_items
   def create
@@ -11,18 +11,19 @@ class Api::V1::LostItemsController < ApplicationController
   def create_with_image
     lost_item = LostItem.new(lost_item_params)
 
-    if lost_item.save!
-      lost_item_id = lost_item.id
-      lost_item_image = LostItemImage.new(lost_item_image_params.merge(lost_item_id: lost_item_id))
-      lost_item_image.save!
-      render json: lost_item_response(lost_item), status: :created
-    end
+    return unless lost_item.save!
+
+    lost_item_id = lost_item.id
+    lost_item_image = LostItemImage.new(lost_item_image_params.merge(lost_item_id: lost_item_id))
+    lost_item_image.save!
+    render json: lost_item_response(lost_item), status: :created
   end
 
   def index
     lost_items = LostItem.all
     response_success(lost_items)
   end
+
   # GET /lost_items/:id
   def show
     render json: lost_item_response(@lost_item)
@@ -37,13 +38,11 @@ class Api::V1::LostItemsController < ApplicationController
       render_error_response('not_project', :not_found)
     elsif !@lost_item.lost_storage_id
       render_error_response('not_storage', :not_found)
-    else
-      if @lost_item.update!(discarded_at: Time.current) && @lost_item.lost_item_images.update_all(discarded_at: Time.current)
-        @lost_item.lost_item_images.each do |image|
-          image.update!(discarded_at: Time.current)
-        end
-        render json: lost_item_response_destroy(@lost_item), status: :ok
+    elsif @lost_item.update!(discarded_at: Time.current) && @lost_item.lost_item_images.update_all(discarded_at: Time.current)
+      @lost_item.lost_item_images.each do |image|
+        image.update!(discarded_at: Time.current)
       end
+      render json: lost_item_response_destroy(@lost_item), status: :ok
     end
   end
 
@@ -61,18 +60,18 @@ class Api::V1::LostItemsController < ApplicationController
   end
 
   def lost_item_image_params
-    params.require(:lost_item_image).permit(:lost_item_id, :content )
+    params.require(:lost_item_image).permit(:lost_item_id, :content)
   end
 
   # TODO: 書き方がおかしいので修正する＆active_model_serializersを使用するようにして下さい
   def lost_item_response_destroy(lost_item)
-    {id: lost_item.id,
-    name: lost_item.name,
-    project_id: lost_item.project_id,
-    lost_storage_id: lost_item.lost_storage_id,
-    created_at: lost_item.created_at,
-    updated_at: lost_item.updated_at,
-    discarded_at: lost_item.discarded_at}
+    { id: lost_item.id,
+      name: lost_item.name,
+      project_id: lost_item.project_id,
+      lost_storage_id: lost_item.lost_storage_id,
+      created_at: lost_item.created_at,
+      updated_at: lost_item.updated_at,
+      discarded_at: lost_item.discarded_at }
   end
 
   def lost_item_response(lost_item)
@@ -91,11 +90,7 @@ class Api::V1::LostItemsController < ApplicationController
       updated_at: lost_item.updated_at
     }
 
-    if lost_item.lost_item_images.present?
-      response[:content] = lost_item.lost_item_images.map(&:content)
-    else
-      response[:content] = nil
-    end
+    response[:content] = (lost_item.lost_item_images.map(&:content) if lost_item.lost_item_images.present?)
     response
   end
 

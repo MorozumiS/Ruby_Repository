@@ -37,7 +37,29 @@
       - フレームワーク: Ruby on Railsを使用するものとする。
       - フロントエンドは実装しない。
       - Ruby 2.7.4
-      - Rails 6系
+      - Rails 6.1.7.4
+      - DBはMySQL
+      - テストはRSpec
+      - formatterはrubocop
+         - rubocop-rails
+         - rubocop
+         - rubocop使用方法
+            - スタート
+               - `docker-compose exec app rubocop`
+            - 自動修正
+               - `docker-compose exec app rubocop -a`
+            - 特定のファイルのみ確認
+               - `docker-compose exec app rubocop 特定のファイルのパス`
+            - 警告レベル
+               F Fatal
+               E Error
+               W Warning
+               C Convention
+               R Refactor
+         - PR作成する前に必ずrubocopを実行してください
+            - 全部修正してからPRを作成してください
+               - PRにスクショを貼ってください
+
       - 認証
         - devise
       - 論理削除

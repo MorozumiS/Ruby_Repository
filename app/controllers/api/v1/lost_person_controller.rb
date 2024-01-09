@@ -1,7 +1,7 @@
 # TODO: コントローラー名は複数形にするのが一般的です（lost_people_controller.rb）
 class Api::V1::LostPersonController < ApplicationController
   before_action :set_project
-  before_action :set_lost_person, only: [:show,:update]
+  before_action :set_lost_person, only: %i[show update]
 
   # POST /api/v1/projects/:project_id/lost_person
   def create
@@ -32,18 +32,17 @@ class Api::V1::LostPersonController < ApplicationController
 
   # TODO: APIのエンドポイントをコメントで追加して下さい(他の箇所も全部対応して下さい)
   def update
-    return render_error_response('not_lost_person',:not_found) unless @lost_person
+    return render_error_response('not_lost_person', :not_found) unless @lost_person
 
-    if @lost_person.update!(lost_person_params)
-      @lost_person.lost_person_images.each do |image|
-        new_content = params.dig(:lost_person_image,:content)
-        image.assign_attributes(content: new_content,updated_at: Time.current)
-        image.save!
-      end
-      render json: lost_person_response(@lost_person), status: :ok
+    return unless @lost_person.update!(lost_person_params)
+
+    @lost_person.lost_person_images.each do |image|
+      new_content = params.dig(:lost_person_image, :content)
+      image.assign_attributes(content: new_content, updated_at: Time.current)
+      image.save!
     end
+    render json: lost_person_response(@lost_person), status: :ok
   end
-
 
   private
 
@@ -60,7 +59,8 @@ class Api::V1::LostPersonController < ApplicationController
   end
 
   def lost_person_params
-    params.require(:lost_person).permit(:name, :kana, :gender, :age, :tall, :reception_at, :status, :lost_storage_id, :project_id, :client_id)
+    params.require(:lost_person).permit(:name, :kana, :gender, :age, :tall, :reception_at, :status, :lost_storage_id,
+                                        :project_id, :client_id)
   end
 
   def lost_person_image_params
@@ -84,7 +84,7 @@ class Api::V1::LostPersonController < ApplicationController
       created_at: lost_person.created_at,
       updated_at: lost_person.updated_at,
       client_id: lost_person.client_id,
-      user_name: lost_person.client.name,
+      user_name: lost_person.client.name
     }
     # TODO: ここもresponseに含めるようにして下さい（別の処理にしないでください）
     response[:content] = lost_person.lost_person_images.map { |image| { content: image.content } }

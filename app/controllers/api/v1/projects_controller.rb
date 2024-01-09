@@ -1,6 +1,6 @@
 # TODO: 不要なコメントは削除してください
 class Api::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: [:show, :update, :destroy]
+  before_action :set_project, only: %i[show update destroy]
 
   # GET /api/v1/projects
   def index
@@ -11,9 +11,9 @@ class Api::V1::ProjectsController < ApplicationController
   # GET /api/v1/projects/:id
   def show
     # TODO: ソースコードをリファクタリングしてください
-    if @project&.delete_flg == false
-      response_success(@project)
-    end
+    return unless @project&.delete_flg == false
+
+    response_success(@project)
   end
 
   # GET /api/v1/projects/search
@@ -37,12 +37,10 @@ class Api::V1::ProjectsController < ApplicationController
     # TODO: 部分一致は「%」を左右につけて下さい
     # TODO: ここ微妙なので、例を参考にしてリファクタリングして下さい
     # [例：]
-    name_query = ""
-    if params[:name].present?
-      name_query = params[:name] + "%"
-    end
+    name_query = ''
+    name_query = params[:name] + '%' if params[:name].present?
     # name_query = params[:name].present? ?  params[:name] + "%" : nil
-    place_query = params[:place].present? ?  params[:place] + "%" : nil
+    place_query = params[:place].present? ? params[:place] + '%' : nil
 
     # TODO: SQLインジェクション対策のため、where句には?を使って下さい(プレスホルダーの使用)
     # 参考: https://pikawaka.com/rails/where
@@ -80,15 +78,16 @@ class Api::V1::ProjectsController < ApplicationController
 
   # DELETE /api/v1/projects/:id
   def destroy
-    if @project.update!(delete_flg: true, discarded_at: Time.current)
-      render json: project_response(@project), status: :ok
-    end
+    return unless @project.update!(delete_flg: true, discarded_at: Time.current)
+
+    render json: project_response(@project), status: :ok
   end
 
   private
 
   def project_params
-    params.require(:project).permit(:name, :start_at, :end_at, :place, :execution_date, :user_id, :delete_flg, :discarded_at)
+    params.require(:project).permit(:name, :start_at, :end_at, :place, :execution_date, :user_id, :delete_flg,
+                                    :discarded_at)
   end
 
   def set_project
@@ -96,10 +95,9 @@ class Api::V1::ProjectsController < ApplicationController
   end
 
   def project_response(project)
-    {name: project.name,
-    user_id: project.user_id,
-    created_at: project.created_at,
-    updated_at: project.updated_at}
+    { name: project.name,
+      user_id: project.user_id,
+      created_at: project.created_at,
+      updated_at: project.updated_at }
   end
-
 end
