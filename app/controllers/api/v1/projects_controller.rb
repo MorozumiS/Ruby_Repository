@@ -5,7 +5,6 @@ class Api::V1::ProjectsController < ApplicationController
   # GET /api/v1/projects
   def index
     projects = Project.all
-    # response_success(projects)
     render json: projects, each_serializer: ProjectSerializer
   end
 
@@ -22,17 +21,17 @@ class Api::V1::ProjectsController < ApplicationController
     # TODO: エラー文が複数ある時は、複数返却できるようにして下さい
     if params[:name].blank? && params[:place].blank?
       error_message = I18n.t('response.message.blank_keywords')
-    return response_custom_error(error_message, :bad_request)#TODO: インデント揃えて下さい
+      return response_custom_error(error_message, :bad_request)
     end
 
     if params[:name].present? && params[:name].length < 3
       error_message = I18n.t('response.message.name_too_short')
-    return response_custom_error(error_message, :bad_request)#TODO: インデント揃えて下さい
+      return response_custom_error(error_message, :bad_request)
     end
 
     if params[:place].present? && params[:place].length < 3
       error_message = I18n.t('response.message.place_too_short')
-    return response_custom_error(error_message, :bad_request)#TODO: インデント揃えて下さい
+      return response_custom_error(error_message, :bad_request)
     end
 
     # TODO: 部分一致は「%」を左右につけて下さい
@@ -48,10 +47,9 @@ class Api::V1::ProjectsController < ApplicationController
     # TODO: SQLインジェクション対策のため、where句には?を使って下さい(プレスホルダーの使用)
     # 参考: https://pikawaka.com/rails/where
     if name_query && place_query
-      # TODO: compactは何のために、使っていますか？
-      projects = Project.where("name LIKE ? AND place LIKE ?", name_query, place_query).compact
+      projects = Project.where("name LIKE ? AND place LIKE ?", name_query, place_query)
     else
-      projects = Project.where("name LIKE ? OR place LIKE ?", name_query, place_query).compact
+      projects = Project.where("name LIKE ? OR place LIKE ?", name_query, place_query)
     end
     response_success(projects)
   end
@@ -69,15 +67,14 @@ class Api::V1::ProjectsController < ApplicationController
     if @project.update(project_params)
       response_success(@project)
     else
-      # TODO: errorをerror_messageに変更
-      error = if @project.errors.full_messages_for(:name).present? && @project.errors.full_messages_for(:place).present?
+      error_message = if @project.errors.full_messages_for(:name).present? && @project.errors.full_messages_for(:place).present?
                 I18n.t('response.message.both_blank')
               elsif @project.errors.full_messages_for(:name).present?
                 I18n.t('response.message.name_blank')
               elsif @project.errors.full_messages_for(:place).present?
                 I18n.t('response.message.place_blank')
               end
-      render json: { error: error}, status: :unprocessable_entity
+      render json: { error: error_message}, status: :unprocessable_entity
     end
   end
 
