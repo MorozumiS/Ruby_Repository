@@ -59,7 +59,8 @@ class Api::V1::LostItemsController < ApplicationController
   end
 
   def lost_item_response_destroy(lost_item)
-    render json: lost_item, serializer: LostItemSerializer, only: [:id, :name, :project_id, :lost_storage_id, :created_at, :updated_at, :discarded_at]
+    render json: lost_item, serializer: LostItemSerializer,
+            only: %i[id name project_id lost_storage_id created_at updated_at discarded_at]
   end
 
   def lost_item_response(lost_item)

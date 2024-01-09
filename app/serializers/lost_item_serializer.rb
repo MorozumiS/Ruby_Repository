@@ -46,7 +46,8 @@
 #  fk_rails_...  (lost_item_id => lost_items.id)
 #
 class LostItemSerializer < ActiveModel::Serializer
-  attributes :id, :name, :comment, :features, :owner_name, :owner_tel, :owner_address, :lost_spot, :project_id, :lost_storage_id, :created_at, :updated_at, :content
+  attributes :id, :name, :comment, :features, :owner_name, :owner_tel, :owner_address, :lost_spot, :project_id,
+            :lost_storage_id, :created_at, :updated_at, :content
 
   def content
     object.lost_item_images.map(&:content) if object.lost_item_images.present?
