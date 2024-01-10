@@ -1,16 +1,15 @@
 class Api::V1::LostItemsController < ApplicationController
   before_action :set_lost_item, only: %i[show destroy]
 
-  # POST /project_id/lost_items/id/create_with_image
-  def create_with_image
+  # POST /project_id/lost_items/id/create
+  def create
     lost_item = LostItem.new(lost_item_params)
-
     return unless lost_item.save!
 
     lost_item_id = lost_item.id
     lost_item_image = LostItemImage.new(lost_item_image_params.merge(lost_item_id: lost_item_id))
     lost_item_image.save!
-    render json: lost_item_response(lost_item), status: :created
+    render json: lost_item, serializer: LostItemSerializer
   end
 
   # GET /project_id/lost_items
@@ -21,7 +20,7 @@ class Api::V1::LostItemsController < ApplicationController
 
   # GET /lost_items/:id
   def show
-    render json: lost_item_response(@lost_item)
+    render json: @lost_item, serializer: LostItemSerializer
   end
 
   # DELETE /lost_items/:id
@@ -61,10 +60,6 @@ class Api::V1::LostItemsController < ApplicationController
   def lost_item_response_destroy(lost_item)
     render json: lost_item, serializer: LostItemSerializer,
             only: %i[id name project_id lost_storage_id created_at updated_at discarded_at]
-  end
-
-  def lost_item_response(lost_item)
-    render json: lost_item, serializer: LostItemSerializer
   end
 
   def render_error_response(message_key, status)

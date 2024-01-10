@@ -5,11 +5,7 @@ Rails.application.routes.draw do
       post '/auth', to: 'sessions#create'
       resources :projects do
         get '/search' => 'projects#search' , on: :collection
-        resources :lost_items do#TODO: create_with_imageは削除する
-          post 'create_with_image', to: 'lost_items#create_with_image', on: :member
-        end
-        resources :lost_person do#TODO: create_with_imageは削除する
-          post 'create_with_image', to: 'lost_person#create_with_image', on: :member
+        resources :lost_items do
         end
       end
     end
