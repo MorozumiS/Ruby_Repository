@@ -43,7 +43,7 @@ class Api::V1::ProjectsController < ApplicationController
   # PATCH /api/v1/projects/:id
   def update
     if @project.update(project_params)
-      response_success(project)
+      response_success(@project)
     else
       error_message = if @project.errors.full_messages_for(:name).present? && @project.errors.full_messages_for(:place).present?
                         I18n.t('response.message.both_blank')
