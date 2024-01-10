@@ -10,28 +10,23 @@ class Api::V1::ProjectsController < ApplicationController
   # GET /api/v1/projects/:id
   def show
     return unless @project&.delete_flg == false
-    response_success(@project)
+    render json: project, serializer: ProjectSerializer
   end
 
   # GET /api/v1/projects/search
   def search
     error_messages = []
 
-    error_messages = I18n.t('response.message.blank_keywords') if params[:name].blank? && params[:place].blank?
-
-    error_messages = I18n.t('response.message.name_too_short') if params[:name].present? && params[:name].length < 3
-
-    error_messages = I18n.t('response.message.place_too_short') if params[:place].present? && params[:place].length < 3
+    error_messages << I18n.t('response.message.blank_keywords') if params[:name].blank? && params[:place].blank?
+    error_messages << I18n.t('response.message.name_too_short') if params[:name].present? && params[:name].length < 2
+    error_messages << I18n.t('response.message.place_too_short') if params[:place].present? && params[:place].length < 2
 
     return response_custom_error(error_messages, :bad_request) if error_messages.any?
 
-    name_query = ''
-    name_query = params[:name] + '%' if params[:name].present?
+    name_query = params[:name].present? ? params[:name] + '%' : ''
+    place_query = params[:place].present? ? params[:place] + '%' : ''
 
-    place_query = ''
-    place_query = params[:place] + '%' if params[:place].present?
-
-    projects = if name_query && place_query
+    projects = if name_query.present? && place_query.present?
                 Project.where('name LIKE ? AND place LIKE ?', name_query, place_query)
               else
                 Project.where('name LIKE ? OR place LIKE ?', name_query, place_query)
@@ -48,7 +43,7 @@ class Api::V1::ProjectsController < ApplicationController
   # PATCH /api/v1/projects/:id
   def update
     if @project.update(project_params)
-      response_success(@project)
+      response_success(project)
     else
       error_message = if @project.errors.full_messages_for(:name).present? && @project.errors.full_messages_for(:place).present?
                         I18n.t('response.message.both_blank')
@@ -64,8 +59,7 @@ class Api::V1::ProjectsController < ApplicationController
   # DELETE /api/v1/projects/:id
   def destroy
     return unless @project.update!(delete_flg: true, discarded_at: Time.current)
-
-    render json: project_response(@project), status: :ok
+    render json: @project, serializer: ProjectSerializer
   end
 
   private
@@ -77,12 +71,5 @@ class Api::V1::ProjectsController < ApplicationController
 
   def set_project
     @project = Project.find(params[:id])
-  end
-
-  def project_response(project)
-    { name: project.name,
-      user_id: project.user_id,
-      created_at: project.created_at,
-      updated_at: project.updated_at }
   end
 end
