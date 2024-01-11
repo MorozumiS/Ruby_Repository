@@ -3,6 +3,7 @@ class Api::V1::LostPeopleController < ApplicationController
   before_action :set_project
   before_action :set_lost_person, only: %i[show update]
 
+  # TODO: API叩いたらエラーが出たので、修正して下さい
   # POST /api/v1/projects/:project_id/lost_people
   def create
     ActiveRecord::Base.transaction do
@@ -12,15 +13,17 @@ class Api::V1::LostPeopleController < ApplicationController
       if lost_person.save
         render json: lost_person, each_serializer: LostPersonSerializer
       else
+        # TODO: 文字列結合は、+ではなく、#{}記法を使って下さい
         render json: { error: (lost_person.errors.full_messages + lost_person.lost_person_images.first.errors.full_messages).join(', ') }, status: :unprocessable_entity
         raise ActiveRecord::Rollback
       end
     end
   end
 
+  # TODO: API叩いたらエラーが出たので、修正して下さい
   # GET /api/v1/projects/:project_id/lost_people/:id
   def show
-    render json: lost_person, each_serializer: LostPersonSerializer
+    render json: @lost_person, each_serializer: LostPersonSerializer
   end
 
   # GET /api/v1/projects/:project_id/lost_people
@@ -45,6 +48,7 @@ class Api::V1::LostPeopleController < ApplicationController
 
   private
 
+  # TODO: 他のコントローラーにもあるので共通化して下さい
   def set_project
     @project = Project.find(params[:project_id])
   end
@@ -57,6 +61,7 @@ class Api::V1::LostPeopleController < ApplicationController
     @lost_person_image = @project.lost_people.find(params[:id])
   end
 
+  # TODO: ストロングパラメーターは複数あるならまとめて下さい(諸事情により一旦飛ばしでOKです)
   def lost_person_params
     params.require(:lost_person).permit(:name, :kana, :gender, :age, :tall, :reception_at, :status, :lost_storage_id,
                                         :project_id, :client_id)

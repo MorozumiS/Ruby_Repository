@@ -1,3 +1,5 @@
+# TODO: そもそもこのコントローラーは必要ないです APIないですし削除お願いします
+
 class Api::V1::LostPersonImagesController < ApplicationController
   before_action :set_lost_person_image, only: [:show]
 

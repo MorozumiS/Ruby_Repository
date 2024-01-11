@@ -31,6 +31,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class LostPersonSerializer < ActiveModel::Serializer
+  # TODO: lost_storage_id, project_id, client_idから親のデータを取得する
   attributes :id, :name, :kana, :gender, :age, :tall, :reception_at, :status, :project_id, :lost_storage_id, :content, :created_at, :updated_at, :client_id
 
   def content
