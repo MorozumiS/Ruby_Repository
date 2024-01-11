@@ -31,6 +31,9 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class LostPersonSerializer < ActiveModel::Serializer
-  attributes :id
-  # TODO: ここに必要な属性を追加して下さい(一旦はコントローラー側で返している情報のみでOKです )
+  attributes :id, :name, :kana, :gender, :age, :tall, :reception_at, :status, :project_id, :lost_storage_id, :content, :created_at, :updated_at, :client_id
+
+  def content
+    object.lost_person_images.map(&:content) if object.lost_person_images.present?
+  end
 end
