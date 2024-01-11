@@ -1,29 +1,33 @@
 class Api::V1::LostItemsController < ApplicationController
   before_action :set_lost_item, only: %i[show destroy]
 
-  # POST /lost_items
+  # POST /api/v1/lost_items
   def create
-    lost_item = LostItem.new(lost_item_params)
-    return unless lost_item.save!
+    ActiveRecord::Base.transaction do
+      lost_item = LostItem.new(lost_item_params)
+      lost_item.lost_item_images.build(lost_item_image_params)
 
-    lost_item_id = lost_item.id
-    lost_item_image = LostItemImage.new(lost_item_image_params.merge(lost_item_id: lost_item_id))
-    lost_item_image.save!
-    render json: lost_item, serializer: LostItemSerializer
+      if lost_item.save
+        render json: lost_item, serializer: LostItemSerializer
+      else
+        render json: { error: lost_item.errors.full_messages.join(', ') }, status: :unprocessable_entity
+        raise ActiveRecord::Rollback
+      end
+    end
   end
 
-  # GET /lost_items
+  # GET /api/v1/lost_items
   def index
     lost_items = LostItem.all
     response_success(lost_items)
   end
 
-  # GET /lost_items/:id
+  # GET /api/v1/lost_items/:id
   def show
     render json: @lost_item, serializer: LostItemSerializer
   end
 
-  # DELETE /lost_items/:id
+  # DELETE /api/v1/lost_items/:id
   def destroy
     set_lost_item
     if !@lost_item
@@ -59,7 +63,7 @@ class Api::V1::LostItemsController < ApplicationController
 
   def lost_item_response_destroy(lost_item)
     render json: lost_item, serializer: LostItemSerializer,
-            only: %i[id name project_id lost_storage_id created_at updated_at discarded_at]
+    only: [:id :name :project_id :lost_storage_id :created_at :updated_at :discarded_at]
   end
 
   def render_error_response(message_key, status)
