@@ -9,6 +9,7 @@ class Api::V1::ProjectsController < ApplicationController
 
   # GET /api/v1/projects/:id
   def show
+    # TODO: リファクタリング出来ていないので、リファクタリングして下さい
     render json: (project if @project&.delete_flg == false), serializer: ProjectSerializer
   end
 
