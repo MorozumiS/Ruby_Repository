@@ -9,8 +9,7 @@ class Api::V1::ProjectsController < ApplicationController
 
   # GET /api/v1/projects/:id
   def show
-    return unless @project&.delete_flg == false
-    render json: project, serializer: ProjectSerializer
+    render json: (project if @project&.delete_flg == false), serializer: ProjectSerializer
   end
 
   # GET /api/v1/projects/search

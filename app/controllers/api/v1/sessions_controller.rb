@@ -12,8 +12,6 @@ class Api::V1::SessionsController < ApplicationController
       access_token = JWT.encode({ data: data, exp: Time.current.tomorrow.to_i }, 'secret')
       render json: { accessToken: access_token }, status: :ok
 
-
-
     # userが存在しない場合
     else
       # 独自の例外を発生させる
