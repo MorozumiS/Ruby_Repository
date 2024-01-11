@@ -1,7 +1,7 @@
 class Api::V1::LostItemsController < ApplicationController
   before_action :set_lost_item, only: %i[show destroy]
 
-  # POST /project_id/lost_items/id/create
+  # POST /lost_items
   def create
     lost_item = LostItem.new(lost_item_params)
     return unless lost_item.save!
@@ -12,7 +12,7 @@ class Api::V1::LostItemsController < ApplicationController
     render json: lost_item, serializer: LostItemSerializer
   end
 
-  # GET /project_id/lost_items
+  # GET /lost_items
   def index
     lost_items = LostItem.all
     response_success(lost_items)

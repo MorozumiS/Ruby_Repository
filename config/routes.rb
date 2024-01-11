@@ -5,9 +5,8 @@ Rails.application.routes.draw do
       post '/auth', to: 'sessions#create'
       resources :projects do
         get '/search' => 'projects#search' , on: :collection
-        resources :lost_items do
-        end
       end
+      resources :lost_items
     end
   end
 end
