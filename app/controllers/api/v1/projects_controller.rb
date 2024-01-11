@@ -23,8 +23,8 @@ class Api::V1::ProjectsController < ApplicationController
 
     return response_custom_error(error_messages, :bad_request) if error_messages.any?
 
-    name_query = params[:name].present? ? params[:name] + '%' : ''
-    place_query = params[:place].present? ? params[:place] + '%' : ''
+    name_query = params[:name].present? ? '%' + params[:name] + '%' : ''
+    place_query = params[:place].present? ? '%' + params[:place] + '%' : ''
 
     projects = if name_query.present? && place_query.present?
                 Project.where('name LIKE ? AND place LIKE ?', name_query, place_query)
