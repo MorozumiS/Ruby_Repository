@@ -1,4 +1,3 @@
-# TODO: コントローラー名は複数形にするのが一般的です（lost_people_controller.rb）
 class Api::V1::LostPeopleController < ApplicationController
   before_action :set_project
   before_action :set_lost_person, only: %i[show update]
@@ -34,10 +33,12 @@ class Api::V1::LostPeopleController < ApplicationController
 
   # PATCH  /api/v1/projects/:project_id/lost_people/:id
   def update
-    return render_error_response('not_lost_person', :not_found) unless @lost_person
+    # TODO: これってなんのために、書いていますか？
+    # return render_error_response('not_lost_person', :not_found) unless @lost_person
 
+    # TODO: これって必要でしょうか？
     return unless @lost_person.update!(lost_person_params)
-
+    # TODO: ここもトランザクションを使用して下さい
     @lost_person.lost_person_images.each do |image|
       new_content = params.dig(:lost_person_image, :content)
       image.assign_attributes(content: new_content, updated_at: Time.current)
