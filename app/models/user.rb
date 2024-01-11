@@ -20,7 +20,6 @@
 #
 class User < ApplicationRecord
   # 全てのカラム・アクションを監視
-  # TODO: これを参考に、他のモデルにも同様の記述を追加して下さい
   audited
 
   # passwordをハッシュ化して保存する
