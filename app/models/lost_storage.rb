@@ -18,6 +18,9 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class LostStorage < ApplicationRecord
+  # 全てのカラム・アクションを監視
+  audited
+
   MAX_NUMBER = 6
 
   has_many :projects
