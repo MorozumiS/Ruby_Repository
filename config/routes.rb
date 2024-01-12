@@ -8,9 +8,7 @@ Rails.application.routes.draw do
         resources :lost_items do#TODO: create_with_imageは削除する
           post 'create_with_image', to: 'lost_items#create_with_image', on: :member
         end
-        resources :lost_person do#TODO: create_with_imageは削除する
-          post 'create_with_image', to: 'lost_person#create_with_image', on: :member
-        end
+        resources :lost_people
       end
     end
   end
