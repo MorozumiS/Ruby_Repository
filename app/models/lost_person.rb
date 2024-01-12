@@ -31,6 +31,9 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class LostPerson < ApplicationRecord
+  # 全てのカラム・アクションを監視
+  audited
+
   enum status: {
     safeguard: 0,           # 保護した
     contacting_guardian: 1, # 保護者に連絡中
