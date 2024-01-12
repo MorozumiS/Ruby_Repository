@@ -73,5 +73,3 @@ ja:
       not_project: "プロジェクトが存在しません"
       not_strage: "預かりセンターが存在しません"
       not_client: "クライアントが存在しません"
-
-      discarding_failed: "削除に失敗しました"
