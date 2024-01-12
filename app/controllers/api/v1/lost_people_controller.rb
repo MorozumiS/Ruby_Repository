@@ -1,6 +1,6 @@
 class Api::V1::LostPeopleController < ApplicationController
   before_action :set_project
-  before_action :set_lost_person, only: %i[show update]
+  before_action :set_lost_person, only: [:show, :update, :destroy]
 
   # TODO: API叩いたらエラーが出たので、修正して下さい
   # POST /api/v1/projects/:project_id/lost_people
@@ -45,6 +45,20 @@ class Api::V1::LostPeopleController < ApplicationController
       image.save!
     end
     render json: lost_person_response(@lost_person), status: :ok
+  end
+
+  # DELETE /api/v1/projects/:project_id/lost_people/:id
+  def destroy
+    return render_error_response('not_lost_person', :not_found) unless @lost_person
+
+    ActiveRecord::Base.transaction do
+      if @lost_person.update(discarded_at: Time.current)
+        render json: @lost_person, serializer: LostPersonSerializer
+      else
+        render_error_response('discarding_failed', :unprocessable_entity)
+        raise ActiveRecord::Rollback
+      end
+    end
   end
 
   private
