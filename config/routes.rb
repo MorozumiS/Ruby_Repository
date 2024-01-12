@@ -4,11 +4,9 @@ Rails.application.routes.draw do
     namespace :v1 do
       post '/auth', to: 'sessions#create'
       resources :projects do
-        get '/search' => 'projects#search' , on: :collection
-        resources :lost_items do#TODO: create_with_imageは削除する
-          post 'create_with_image', to: 'lost_items#create_with_image', on: :member
-        end
-        resources :lost_people
+        get '/search', to: 'projects#search' , on: :collection
+        resources :lost_items
+        # TODO: master確認しましたが、ここなくなっていますので追加して下さい
       end
     end
   end

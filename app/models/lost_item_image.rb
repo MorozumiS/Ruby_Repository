@@ -23,5 +23,5 @@ class LostItemImage < ApplicationRecord
 
   belongs_to :lost_item
 
-  validates :lost_item_id, :content, presence: true
+  validates :content, presence: true
 end
