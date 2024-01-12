@@ -27,6 +27,9 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class LostItem < ApplicationRecord
+  # 全てのカラム・アクションを監視
+  audited
+
   has_many :lost_item_images, dependent: :destroy
 
   validates :name, :lost_spot, :lost_storage_id, presence: true

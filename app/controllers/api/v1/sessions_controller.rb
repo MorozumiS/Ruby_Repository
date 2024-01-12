@@ -1,5 +1,4 @@
 class Api::V1::SessionsController < ApplicationController
-
   # 認証前のため、トークン認証をスキップする
   skip_before_action :verify_token, only: [:create]
   def create
@@ -11,8 +10,8 @@ class Api::V1::SessionsController < ApplicationController
       # アクセストークンを作成(1日有効)
       # TODO: ゆくゆくはJWTの有効期限を短くして、リフレッシュトークンを発行するようにして下さい
       access_token = JWT.encode({ data: data, exp: Time.current.tomorrow.to_i }, 'secret')
-
       render json: { accessToken: access_token }, status: :ok
+
     # userが存在しない場合
     else
       # 独自の例外を発生させる

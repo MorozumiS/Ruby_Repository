@@ -18,6 +18,9 @@
 #  fk_rails_...  (lost_item_id => lost_items.id)
 #
 class LostItemImage < ApplicationRecord
+  # 全てのカラム・アクションを監視
+  audited
+
   belongs_to :lost_item
 
   validates :content, presence: true
