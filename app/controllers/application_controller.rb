@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::API
-
   # 独自の例外クラスを作成
   class User::NotAuthorizedError < Exception; end
   before_action :verify_token
@@ -56,14 +55,15 @@ class ApplicationController < ActionController::API
   end
 
   def verify_token
-    auth_header = request.headers["Authorization"]
+    auth_header = request.headers['Authorization']
     return render status: :unauthorized unless auth_header
+
     # 実際のトークンは2番目に格納されているため
-    token = auth_header.split(" ")[1]
+    token = auth_header.split(' ')[1]
     begin
-      payload, = JWT.decode(token, "secret")
+      payload, = JWT.decode(token, 'secret')
     rescue JWT::ExpiredSignature
-      return render status: :forbidden
+      render status: :forbidden
     end
   end
 end

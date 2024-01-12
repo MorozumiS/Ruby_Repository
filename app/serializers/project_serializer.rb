@@ -23,5 +23,5 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class ProjectSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id, :name, :start_at, :end_at, :place, :user_id, :created_at, :updated_at
 end
